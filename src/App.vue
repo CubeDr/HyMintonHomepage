@@ -24,7 +24,7 @@ export default {
   components: {ShuttlePage, EventPage, FeePage, HyNav, HyHeader, NoticePage},
   data () {
     return {
-      page: '공지사항',
+      page: 'notice',
       background: '#F0F8FF'
     }
   },
