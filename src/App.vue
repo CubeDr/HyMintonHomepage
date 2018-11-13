@@ -7,7 +7,8 @@
       <HyNav class="unSelectable" :page="page" @click="page = $event" :selectColor="background"/>
     </nav>
 
-    <component is="NoticePage"/>
+
+    <component :is="getCurrentPage()"/>
   </div>
 </template>
 
@@ -15,13 +16,27 @@
 import HyHeader from "./components/HyHeader";
 import HyNav from "./components/HyNav";
 import NoticePage from "./pages/NoticePage";
+import EventPage from "./pages/EventPage";
+import FeePage from "./pages/FeePage";
+import ShuttlePage from "./pages/ShuttlePage";
 
 export default {
-  components: {HyNav, HyHeader, NoticePage},
+  components: {ShuttlePage, EventPage, FeePage, HyNav, HyHeader, NoticePage},
   data () {
     return {
       page: '공지사항',
       background: '#F0F8FF'
+    }
+  },
+  methods: {
+    getCurrentPage() {
+      switch (this.page) {
+        case 'notice': return 'NoticePage';
+        case 'event': return 'EventPage';
+        case 'fee': return 'FeePage';
+        case 'shuttle': return 'ShuttlePage';
+        default: return 'NoticePage';
+      }
     }
   }
 }
