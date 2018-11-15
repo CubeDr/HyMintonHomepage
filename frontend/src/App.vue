@@ -6,9 +6,7 @@
     <nav>
       <HyNav class="unSelectable" :page="page" @click="page = $event" :selectColor="background"/>
     </nav>
-
-
-    <component :is="getCurrentPage()"/>
+    <component id="body" :is="getCurrentPage()"/>
   </div>
 </template>
 
@@ -49,6 +47,10 @@ export default {
   min-width: 700px;
   max-width: 1100px;
   margin: auto;
+}
+
+#body {
+  margin-top: 20px;
 }
 
 *.unSelectable {

@@ -62,7 +62,6 @@
 
 <style scoped>
 div {
-  padding-top: 20px;
 }
 
 table {
