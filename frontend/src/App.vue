@@ -6,7 +6,9 @@
     <nav>
       <HyNav class="unSelectable" :page="page" @click="page = $event" :selectColor="background"/>
     </nav>
-    <component id="body" :is="getCurrentPage()"/>
+    <keep-alive>
+      <component id="body" :is="getCurrentPage()"/>
+    </keep-alive>
   </div>
 </template>
 
