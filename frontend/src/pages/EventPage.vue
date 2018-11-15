@@ -1,10 +1,12 @@
 <template>
-    <h1>Event Page</h1>
+    <EventCalendar></EventCalendar>
 </template>
 
 <script>
+    import EventCalendar from "../components/EventCalendar";
     export default {
-        name: "EventPage"
+        name: "EventPage",
+      components: {EventCalendar}
     }
 </script>
 
