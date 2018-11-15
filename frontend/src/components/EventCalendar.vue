@@ -1,23 +1,28 @@
 <template>
     <div>
-        <table>
-          <thead>
-            <tr>
-              <td>일</td>
-              <td>월</td>
-              <td>화</td>
-              <td>수</td>
-              <td>목</td>
-              <td>금</td>
-              <td>토</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="week in getCalendarArray()">
-              <td v-for="date in week">{{ date }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div id="monthPicker">
+        <button class="pickButton" @click="changeMonth(-1)"><</button>
+        <h1 id="monthDisplay">{{ displayYear }}년 {{ displayMonth }}월</h1>
+        <button class="pickButton" @click="changeMonth(1)">></button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <td>일</td>
+            <td>월</td>
+            <td>화</td>
+            <td>수</td>
+            <td>목</td>
+            <td>금</td>
+            <td>토</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="week in getCalendarArray()">
+            <td v-for="date in week">{{ date }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </template>
 
@@ -38,13 +43,21 @@
           }
         }
       },
+      data() {
+        return {
+          displayYear: this.year,
+          displayMonth: this.month
+        }
+      },
       methods: {
         getStartOffset() {
-          return new Date(this.year, this.month-1).getDay();
+          return new Date(this.displayYear, this.displayMonth-1).getDay();
         },
+
         getLastDate() {
-          return new Date(this.year, this.month, 0).getDate();
+          return new Date(this.displayYear, this.displayMonth, 0).getDate();
         },
+
         getCalendarArray() {
           let calendar = [];
           let offset = this.getStartOffset();
@@ -66,6 +79,18 @@
 
           console.log(calendar);
           return calendar;
+        },
+
+        changeMonth(delta) {
+          this.displayMonth += delta;
+          while(this.displayMonth > 12) {
+            this.displayMonth -= 12;
+            this.displayYear++;
+          }
+          while(this.displayMonth <= 0) {
+            this.displayMonth += 12;
+            this.displayYear--;
+          }
         }
       }
     }
@@ -84,7 +109,23 @@
   }
 
   td {
-    height: 80px;
+    height: 60px;
     border: 1px solid #ddd;
+  }
+
+  #monthPicker {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    height: 50px;
+  }
+
+  #monthDisplay {
+    margin: 0 20px 0 20px;
+  }
+
+  .pickButton {
+    width: 50px;
+    height: 100%;
   }
 </style>
