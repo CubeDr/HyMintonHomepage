@@ -64,7 +64,6 @@
 </script>
 
 <style scoped>
-
 #control {
   text-align: end;
 }

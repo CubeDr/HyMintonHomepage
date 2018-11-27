@@ -1,7 +1,7 @@
 module.exports = {
-    host        : 'localhost',
+    host        : '115.140.236.238',
     user        : 'root',
-    password    : 'dial11',
-    port        : 3306 ,
+    password    : '1111',
+    port        : 14306 ,
     database    : 'hymt_db'
 }
