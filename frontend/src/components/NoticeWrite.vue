@@ -31,13 +31,13 @@
   width: 5%;
   font-weight: bold;
 }
+
 #ipTitle {
   margin: 0;
-  width: 95%;
 }
-#taContent {
-  width: 100%;
-  height: 300px;
-  margin-top: 15px;
+
+#noticeWrite {
+  width: 50%;
+  margin: auto;
 }
 </style>
