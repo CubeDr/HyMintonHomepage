@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div id="control">
+      <button>공지 작성</button>
+    </div>
     <table>
       <thead>
         <tr>
@@ -61,13 +64,15 @@
 </script>
 
 <style scoped>
-div {
+#control {
+  text-align: end;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  margin-top: 15px;
 }
 
 thead {
