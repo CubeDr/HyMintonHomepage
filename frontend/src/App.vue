@@ -7,7 +7,7 @@
       <HyNav class="unSelectable" :page="page" @click="page = $event" :selectColor="background"/>
     </nav>
     <keep-alive>
-      <component id="body" :is="getCurrentPage()"/>
+      <router-view></router-view>
     </keep-alive>
   </div>
 </template>
@@ -21,22 +21,11 @@
   import ShuttlePage from "./pages/ShuttlePage";
 
   export default {
-    components: {ShuttlePage, EventPage, FeePage, HyNav, HyHeader, NoticePage},
+    components: {HyNav, HyHeader},
     data () {
       return {
-        page: 'notice',
+        page: 'Notice',
         background: 'white'
-      }
-    },
-    methods: {
-      getCurrentPage() {
-        switch (this.page) {
-          case 'notice': return 'NoticePage';
-          case 'event': return 'EventPage';
-          case 'fee': return 'FeePage';
-          case 'shuttle': return 'ShuttlePage';
-          default: return 'NoticePage';
-        }
       }
     }
   }

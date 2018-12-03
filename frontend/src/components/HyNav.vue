@@ -3,7 +3,7 @@
       <div id="navHolder">
         <HyNavButton class="navButton"
                      title="공지사항"
-                     page="notice"
+                     page="Notice"
                      :current="page"
                      :selectColor="selectColor"
                      @navBtnClick="noticeClick($event)">
@@ -11,7 +11,7 @@
         </HyNavButton>
         <HyNavButton class="navButton"
                      title="행사"
-                     page="event"
+                     page="Event"
                      :current="page"
                      :selectColor="selectColor"
                      @navBtnClick="noticeClick($event)">
@@ -19,7 +19,7 @@
         </HyNavButton>
         <HyNavButton class="navButton"
                      title="회비"
-                     page="fee"
+                     page="Fee"
                      :current="page"
                      :selectColor="selectColor"
                      @navBtnClick="noticeClick($event)">
@@ -27,7 +27,7 @@
         </HyNavButton>
         <HyNavButton class="navButton"
                      title="셔틀콕"
-                     page="shuttle"
+                     page="Shuttle"
                      :current="page"
                      :selectColor="selectColor"
                      @navBtnClick="noticeClick($event)">
@@ -39,13 +39,15 @@
 
 <script>
     import HyNavButton from "./HyNavButton";
+    import router from '../router'
     export default {
         name: "HyTab",
         props: ['page', 'selectColor'],
         components: {HyNavButton},
         methods: {
           noticeClick(what) {
-            this.$emit('click', what)
+            this.$emit('click', what);
+            router.push({name: what+'Page'});
           }
         }
     }
