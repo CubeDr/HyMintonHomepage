@@ -1,8 +1,8 @@
 <template>
     <div>
       <form>
-        <input id="ipTitle" type="text" placeholder="제목"/>
-        <textarea id="taContent" title="내용"></textarea>
+        <input id="ipTitle" type="text" placeholder="제목" v-model="title"/>
+        <textarea id="taContent" title="내용" v-model="content"></textarea>
         <div id="btns">
           <button @click.prevent="cancel()">취소</button>
           <button @click.prevent="submit()">작성</button>
@@ -14,12 +14,17 @@
 <script>
     export default {
       name: "NoticeWrite",
+      data() {
+        return {
+          title: "",
+          content: ""
+        }
+      },
       methods: {
         cancel() {
 
         },
         submit() {
-
         }
       }
     }
