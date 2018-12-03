@@ -17,8 +17,11 @@
       },
       created() {
           eventBus.$on('writeClick', () => {
-            this.state = 'write'
-          })
+            this.state = 'write';
+          });
+          eventBus.$on('cancelNoticeWrite', () => {
+            this.state = 'list';
+          });
       }
     }
 </script>

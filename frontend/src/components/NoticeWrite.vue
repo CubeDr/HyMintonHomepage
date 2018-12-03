@@ -12,6 +12,8 @@
 </template>
 
 <script>
+    import {eventBus} from "../main";
+
     export default {
       name: "NoticeWrite",
       data() {
@@ -22,7 +24,9 @@
       },
       methods: {
         cancel() {
-
+          if(confirm("공지 작성을 취소하시겠습니까?")) {
+            eventBus.$emit('cancelNoticeWrite');
+          }
         },
         submit() {
         }
