@@ -6,10 +6,11 @@
 </template>
 
 <script>
+    import logoWhite from '../assets/logo_white.png'
     export default {
       data: function () {
         return {
-          logo: require("../assets/logo_white.png")
+          logo: logoWhite
         }
       }
     }
