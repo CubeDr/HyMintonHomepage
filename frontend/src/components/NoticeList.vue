@@ -43,9 +43,9 @@
           }
       },
       created() {
-          this.$http.get('https://jsonplaceholder.typicode.com/posts').then(function (data) {
-            console.log(data);
-            this.notices = data.body.slice(0, 10);
+          this.$http.get('https://jsonplaceholder.typicode.com/posts').then((result) => {
+            console.log(result.data);
+            this.notices = result.data.slice(0, 10);
           })
       }
     }
