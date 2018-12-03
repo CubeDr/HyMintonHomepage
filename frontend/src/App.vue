@@ -13,60 +13,60 @@
 </template>
 
 <script>
-import HyHeader from "./components/HyHeader";
-import HyNav from "./components/HyNav";
-import NoticePage from "./pages/NoticePage";
-import EventPage from "./pages/EventPage";
-import FeePage from "./pages/FeePage";
-import ShuttlePage from "./pages/ShuttlePage";
+  import HyHeader from "./components/HyHeader";
+  import HyNav from "./components/HyNav";
+  import NoticePage from "./pages/NoticePage";
+  import EventPage from "./pages/EventPage";
+  import FeePage from "./pages/FeePage";
+  import ShuttlePage from "./pages/ShuttlePage";
 
-export default {
-  components: {ShuttlePage, EventPage, FeePage, HyNav, HyHeader, NoticePage},
-  data () {
-    return {
-      page: 'notice',
-      background: '#F0F8FF'
-    }
-  },
-  methods: {
-    getCurrentPage() {
-      switch (this.page) {
-        case 'notice': return 'NoticePage';
-        case 'event': return 'EventPage';
-        case 'fee': return 'FeePage';
-        case 'shuttle': return 'ShuttlePage';
-        default: return 'NoticePage';
+  export default {
+    components: {ShuttlePage, EventPage, FeePage, HyNav, HyHeader, NoticePage},
+    data () {
+      return {
+        page: 'notice',
+        background: 'white'
+      }
+    },
+    methods: {
+      getCurrentPage() {
+        switch (this.page) {
+          case 'notice': return 'NoticePage';
+          case 'event': return 'EventPage';
+          case 'fee': return 'FeePage';
+          case 'shuttle': return 'ShuttlePage';
+          default: return 'NoticePage';
+        }
       }
     }
   }
-}
 </script>
 
 <style>
 
-#app {
-  width: 100%;
-  min-width: 700px;
-  max-width: 1100px;
-  margin: auto;
-}
+  #app {
+    width: 100%;
+    min-width: 700px;
+    max-width: 1100px;
+    margin: auto;
+  }
 
-#body {
-  margin-top: 20px;
-}
+  #body {
+    margin-top: 20px;
+  }
 
-*.unSelectable {
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
+  *.unSelectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
 
-  /*
-    Introduced in IE 10.
-    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-  */
-  -ms-user-select: none;
-  user-select: none;
-}
+    /*
+      Introduced in IE 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+  }
 
 
 
