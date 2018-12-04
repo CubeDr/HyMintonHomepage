@@ -1,7 +1,7 @@
 <template>
     <div>
       <nav>
-        <HyNav class="unSelectable" :page="page = $event" :selectColor="background"/>
+        <HyNav class="unSelectable" :page="page" @click="page = $event" :selectColor="background"/>
       </nav>
       <keep-alive>
         <router-view id="body"></router-view>
