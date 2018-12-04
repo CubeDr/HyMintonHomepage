@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="control">
-      <button @click="writeClick()">공지 작성</button>
+      <v-btn @click="writeClick()">공지 작성</v-btn>
     </div>
     <table>
       <thead>

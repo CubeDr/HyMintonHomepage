@@ -1,11 +1,11 @@
 <template>
     <div>
       <form>
-        <input id="ipTitle" type="text" placeholder="제목" v-model="title"/>
-        <textarea id="taContent" title="내용" v-model="content"></textarea>
+        <v-text-field id="ipTitle" type="text" placeholder="제목" v-model="title"/>
+        <v-textarea id="taContent" title="내용" v-model="content" placeholder="공지 내용" :counter="500"></v-textarea>
         <div id="btns">
-          <button @click.prevent="cancel()">취소</button>
-          <button @click.prevent="submit()">작성</button>
+          <v-btn @click.prevent="cancel()">취소</v-btn>
+          <v-btn @click.prevent="submit()">작성</v-btn>
         </div>
       </form>
     </div>
@@ -54,7 +54,7 @@ form {
 }
 
 #taContent {
-  height: 500px;
+  height: 700px;
   margin-top: 10px;
   resize: none;
   font-size: 20px;
