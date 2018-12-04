@@ -1,6 +1,6 @@
 <template>
     <div>
-      Index Page
+      <img src="../assets/hyminton.jpg">
       <router-link to="/login">Login</router-link>
     </div>
 </template>
@@ -12,5 +12,7 @@
 </script>
 
 <style scoped>
-
+img {
+  width: 100%;
+}
 </style>
