@@ -45,6 +45,7 @@
         methods: {
           submit() {
             console.log('login request');
+            router.push({name: 'NoticePage'});
           },
           clear() {
             this.id = '';
