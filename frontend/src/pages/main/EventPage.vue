@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="addButton">
-      <button>일정 추가</button>
+      <v-btn flat>일정 추가</v-btn>
     </div>
     <EventCalendar></EventCalendar>
   </div>
