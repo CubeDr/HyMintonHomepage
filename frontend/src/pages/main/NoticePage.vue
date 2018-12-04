@@ -4,9 +4,9 @@
 </template>
 
 <script>
-    import {eventBus} from "../main";
-    import NoticeList from "../components/NoticeList";
-    import NoticeWrite from "../components/NoticeWrite";
+    import {eventBus} from "../../main";
+    import NoticeList from "../../components/NoticeList";
+    import NoticeWrite from "../../components/NoticeWrite";
     export default {
       name: "NoticePage",
       components: {NoticeWrite, NoticeList},

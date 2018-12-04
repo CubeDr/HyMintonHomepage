@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import EventCalendar from "../components/EventCalendar";
+    import EventCalendar from "../../components/EventCalendar";
     export default {
         name: "EventPage",
       components: {EventCalendar}
