@@ -1,13 +1,12 @@
 <template>
     <div>
-      Index Page
-      <router-link to="/login">Login</router-link>
+      Login
     </div>
 </template>
 
 <script>
     export default {
-        name: "IndexPage"
+        name: "LoginPage"
     }
 </script>
 

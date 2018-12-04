@@ -6,6 +6,7 @@ import NoticePage from '../pages/main/NoticePage'
 import EventPage from '../pages/main/EventPage'
 import FeePage from '../pages/main/FeePage'
 import ShuttlePage from '../pages/main/ShuttlePage'
+import LoginPage from '../pages/LoginPage'
 
 Vue.use(Router);
 
@@ -25,6 +26,10 @@ export default new Router({
         {path: '/fee', name: 'FeePage', component: FeePage},
         {path: '/shuttle', name: 'ShuttlePage', component: ShuttlePage}
       ]
+    }, {
+      path: '/login',
+      name: 'LoginPage',
+      component: LoginPage
     }
   ]
 })
