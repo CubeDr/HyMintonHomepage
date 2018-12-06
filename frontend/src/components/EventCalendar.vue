@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="week in getCalendarArray()">
-            <td v-for="date in week">{{ date }}</td>
+            <td v-for="date in week" @click="select(date)">{{ date }}</td>
           </tr>
         </tbody>
       </table>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import { eventBus } from "@/main";
+
     export default {
       name: "EventCalendar",
       props: {
@@ -50,6 +52,9 @@
         }
       },
       methods: {
+        select(date) {
+          eventBus.$emit('dayClick', this.displayYear, this.displayMonth, date);
+        },
         getStartOffset() {
           return new Date(this.displayYear, this.displayMonth-1).getDay();
         },

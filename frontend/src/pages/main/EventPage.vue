@@ -1,23 +1,29 @@
 <template>
   <div>
-    <div id="addButton">
-      <v-btn flat>일정 추가</v-btn>
-    </div>
-    <EventCalendar></EventCalendar>
+    <EventCalendar v-if="page=='calendar'"></EventCalendar>
+    <EventListPage v-if="page=='list'"></EventListPage>
   </div>
 </template>
 
 <script>
-    import EventCalendar from "../../components/EventCalendar";
+    import {eventBus} from "@/main";
+    import EventCalendar from "@/components/EventCalendar";
+    import EventListPage from "@/pages/event/EventListPage";
     export default {
-        name: "EventPage",
-      components: {EventCalendar}
+      name: "EventPage",
+      components: {EventListPage, EventCalendar},
+      data() {
+        return {
+          page: 'calendar'
+        }
+      },
+      created() {
+        eventBus.$on('dayClick', (y, m, d) => {
+          console.log('view day ' + y + ', ' + m + ', ' + d)
+        })
+      }
     }
 </script>
 
 <style scoped>
-  #addButton {
-    width: 80%;
-    text-align: right;
-  }
 </style>
