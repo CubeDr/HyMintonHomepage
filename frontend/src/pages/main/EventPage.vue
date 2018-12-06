@@ -1,7 +1,8 @@
 <template>
   <div>
-    <EventCalendar v-if="page=='calendar'"></EventCalendar>
-    <EventListPage v-if="page=='list'"></EventListPage>
+    <router-view></router-view>
+    <!--<EventCalendar v-if="page=='calendar'"></EventCalendar>-->
+    <!--<EventListPage v-if="page=='list'"></EventListPage>-->
   </div>
 </template>
 
@@ -19,6 +20,7 @@
       },
       created() {
         eventBus.$on('dayClick', (y, m, d) => {
+          this.$router.push({name: 'EventListPage', params: {year: y, month: m, date: d}});
           console.log('view day ' + y + ', ' + m + ', ' + d)
         })
       }
