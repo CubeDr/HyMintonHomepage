@@ -4,7 +4,7 @@
       <div id="mainTitle">{{ year }}년 {{ month }}월 {{ date }}일 일정</div>
 
       <!-- 일정 추가 버튼 -->
-      <v-card class="card center" @click="dialog=true">
+      <v-card class="card center" @click="openDialog()">
         <v-icon>add</v-icon>
       </v-card>
 
