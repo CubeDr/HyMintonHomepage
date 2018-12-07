@@ -4,8 +4,28 @@
       <div id="mainTitle">{{ year }}년 {{ month }}월 {{ date }}일 일정</div>
 
       <!-- 일정 추가 버튼 -->
-      <v-card class="card center" @click="openDialog()">
+      <v-card v-if="!dialog" class="card center slowTransition" @click="openDialog()">
         <v-icon>add</v-icon>
+      </v-card>
+
+      <!-- 일정 추가 카드 -->
+      <v-card id="addCard" :class="{card:true, slowTransition:true, h0:!dialog}" >
+        <v-card-title class="headline">일정 추가</v-card-title>
+        <v-card-text>
+          <v-form v-model="addEvent.valid">
+            <v-text-field
+              v-model="addEvent.title"
+              :counter="20"
+              label="일정 제목"
+              required></v-text-field>
+            <TimePicker :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
+          </v-form>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red darken-1" flat @click="dialog = false">취소</v-btn>
+            <v-btn color="green darken-1" flat @click="dialog = false">추가</v-btn>
+          </v-card-actions>
+        </v-card-text>
       </v-card>
 
       <!-- 일정 리스트 -->
@@ -14,11 +34,11 @@
         <div class="divider"></div>
         <div class="component grid37">
           <div class="startTimeTitle">시작 시간</div>
-          <div class="startTimeData">{{ timeToString(e.startTime) }}</div>
+          <div class="startTimeData">{{ e.startTime.koreanString }}</div>
         </div>
         <div class="component grid37">
           <div class="endTimeTitle">종료 시간</div>
-          <div class="endTimeData">{{ timeToString(e.endTime) }}</div>
+          <div class="endTimeData">{{ e.endTime.koreanString }}</div>
         </div>
         <div class="divider"></div>
         <div class="participants box-size">
@@ -34,85 +54,71 @@
           </div>
         </div>
       </div>
-
-      <!-- 일정 추가 다이얼로그 -->
-      <v-dialog v-model="dialog" persistent max-width="290">
-        <v-card>
-          <v-card-title class="headline">일정 추가</v-card-title>
-          <v-card-text>
-            <v-form v-model="addEvent.valid">
-              <v-text-field
-                v-model="addEvent.title"
-                :counter="20"
-                label="일정 제목"
-                required></v-text-field>
-              <v-time-picker v-model="addEvent.start" :landscape="true"></v-time-picker>
-              <v-time-picker v-model="addEvent.end" :landscape="true"></v-time-picker>
-            </v-form>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="dialog = false">취소</v-btn>
-              <v-btn color="green darken-1" flat @click="dialog = false">추가</v-btn>
-            </v-card-actions>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </div>
 </template>
 
 <script>
+    import TimePicker from "@/components/TimePicker";
+    import Time from "@/classes/Time";
     export default {
       name: "EventListPage",
+      components: {TimePicker},
       data() {
         return {
           dialog: false,
           addEvent: {
             valid: false,
             title: '',
-            startTime: '',
-            endTime: ''
+            startTime: new Time(2018, 12, 8, 16, 0),
+            endTime: new Time(2018, 12, 8, 19, 0)
           },
           events: [
             {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
-            },{
+            }, {
               title: 'OB 교류전',
-              startTime: '2018-12-06 16:00',
-              endTime: '2018-12-06 19:00',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
+              ourParticipants: 20,
+              guests: 10
+            }, {
+              title: 'OB 교류전',
+              startTime: new Time(2018, 12, 8, 16, 0),
+              endTime: new Time(2018, 12, 8, 19, 0),
               ourParticipants: 20,
               guests: 10
             }
@@ -125,19 +131,6 @@
         date() { return this.$route.params.date; }
       },
       methods: {
-        timeToString(time) {
-          let year = parseInt(time.slice(0, 4));
-          let month = parseInt(time.slice(5, 7));
-          let date = parseInt(time.slice(8, 10));
-          let hour = parseInt(time.slice(11, 13));
-          let min = parseInt(time.slice(14, 16));
-          let ampm = hour>=12?"오후":"오전";
-          if(hour > 12) hour -= 12;
-
-          let result = `${year}년 ${month}월 ${date}일 ${ampm} ${hour}시`;
-          if(min > 0) result += ` ${min}분`;
-          return result;
-        },
         openDialog() {
           // TODO: init dialog
           this.dialog = true;
@@ -174,6 +167,7 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  overflow: hidden;
   transition: 0.5s;
 }
 .card:hover {
@@ -198,5 +192,12 @@
 }
 .title, .startTimeTitle, .endTimeTitle, .opTitle, .gpTitle, .tpTitle {
   font-weight: 700;
+}
+.slowTransition {
+  transition: 1s;
+}
+.h0 {
+  height: 0;
+  box-shadow: None;
 }
 </style>
