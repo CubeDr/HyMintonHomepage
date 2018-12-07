@@ -156,9 +156,9 @@
   position: relative;
 }
 #mainTitle {
+  width: 420px;
   font-weight: 800;
-  font-size: 40px;
-  text-align: center;
+  font-size: 30px;
   margin: auto;
 }
 .divider {
