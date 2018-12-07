@@ -3,6 +3,11 @@
       <!-- 일정 큰 타이틀 -->
       <div id="mainTitle">{{ year }}년 {{ month }}월 {{ date }}일 일정</div>
 
+      <!-- 일정 추가 버튼 -->
+      <v-card class="card center" @click="dialog=true">
+        <v-icon>add</v-icon>
+      </v-card>
+
       <!-- 일정 리스트 -->
       <div class="card" v-for="e in events">
         <div class="title">{{ e.title }}</div>
@@ -29,21 +34,6 @@
           </div>
         </div>
       </div>
-
-      <!-- 일정 추가 버튼 -->
-      <v-btn
-        id="fab"
-        color="pink"
-        dark
-        small
-        absolute
-        bottom
-        right
-        fab
-        @click="openDialog()"
-      >
-        <v-icon>add</v-icon>
-      </v-btn>
 
       <!-- 일정 추가 다이얼로그 -->
       <v-dialog v-model="dialog" persistent max-width="290">
@@ -179,10 +169,15 @@
 .card {
   max-width: 420px;
   margin: 15px auto;
+  background: white;
   box-shadow: 2px 2px 10px 5px lightgray;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  transition: 0.5s;
+}
+.card:hover {
+  background: #eeeeee;
 }
 .title {
   padding: 20px 15px 20px 15px;
