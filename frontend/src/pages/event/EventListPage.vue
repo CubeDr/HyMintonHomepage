@@ -4,7 +4,7 @@
       <div id="mainTitle">{{ year }}년 {{ month }}월 {{ date }}일 일정</div>
 
       <!-- 일정 추가 버튼 -->
-      <v-card v-if="!dialog" class="card center slowTransition" @click="openDialog()">
+      <v-card v-if="!dialog" class="card center slowTransition hover" @click="openDialog()">
         <v-icon>add</v-icon>
       </v-card>
 
@@ -29,7 +29,7 @@
       </v-card>
 
       <!-- 일정 리스트 -->
-      <div class="card" v-for="e in events">
+      <div class="card hover" v-for="e in events">
         <div class="title">{{ e.title }}</div>
         <div class="divider"></div>
         <div class="component grid37">
@@ -168,9 +168,11 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
   overflow: hidden;
+}
+.hover{
   transition: 0.5s;
 }
-.card:hover {
+.hover:hover {
   background: #eeeeee;
 }
 .title {
