@@ -9,7 +9,7 @@ var path = require('path')
 // 이름 리턴
 router.get('/name/:id', function(req, res, next){
   try{
-    var id = parseInt(req.params.id, 10)
+    var id = req.params.id
     connection.query("SELECT lname,fname \
                       FROM User \
                       WHERE UserID=?;", [id], function(err, rows, fields){
@@ -284,7 +284,7 @@ router.get('/payment/nopay', function(req, res, next){
 
 // 회비 - 본인 납부 조회
 router.get('/payment/:id', function(req, res, next){
-  var id = parseInt(req.params.id, 10)
+  var id = req.params.id
   connection.query("SELECT FID as fid, pdate as date, price \
                     FROM Payment, Fee\
                     WHERE UID = ? AND FID=FeeID\
@@ -300,7 +300,7 @@ router.get('/payment/:id', function(req, res, next){
 
 // 회비 - 본인 납부 조회 ( 카운트 )
 router.get('/payment/:id/:cnt', function(req, res, next){
-  var id = parseInt(req.params.id, 10)
+  var id = req.params.id
   var cnt = parseInt(req.params.cnt, 10)
   connection.query("SELECT FID, pdate\
                     FROM Payment \
