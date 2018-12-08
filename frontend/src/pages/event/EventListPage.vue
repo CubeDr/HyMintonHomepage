@@ -4,12 +4,12 @@
       <div id="mainTitle">{{ year }}년 {{ month }}월 {{ date }}일 일정</div>
 
       <!-- 일정 추가 버튼 -->
-      <v-card v-if="!dialog" class="card center slowTransition hover" @click="openDialog()">
+      <v-card v-if="userId >= 4 && !dialog" class="card center slowTransition hover" @click="openDialog()">
         <v-icon>add</v-icon>
       </v-card>
 
       <!-- 일정 추가 카드 -->
-      <v-card id="addCard" :class="{card:true, slowTransition:true, h0:!dialog}" >
+      <v-card v-if="userId >= 4" id="addCard" :class="{card:true, slowTransition:true, h0:!dialog}" >
         <v-card-title class="headline">일정 추가</v-card-title>
         <v-card-text>
           <v-form v-model="addEvent.valid">
@@ -129,7 +129,8 @@
       computed: {
         year() { return this.$route.params.year; },
         month() { return this.$route.params.month; },
-        date() { return this.$route.params.date; }
+        date() { return this.$route.params.date; },
+        userId() { return this.$store.state.user.id; }
       },
       methods: {
         openDialog() {
