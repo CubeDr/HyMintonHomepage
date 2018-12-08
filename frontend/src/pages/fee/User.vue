@@ -17,7 +17,9 @@
 </template>
 
 <script>
-    export default {
+  import Time from "@/classes/Time";
+
+  export default {
       name: "User",
       data () {
         return {
@@ -39,6 +41,16 @@
       methods: {
         loadPaymentInfo() {
           // load from url
+          this.$http.get('http://115.140.236.238:14707/db/payment/' + this.$route.params.id).then((res) => {
+            let d = res.data.map((data) => {
+              return {
+                name: data.fid.slice(0,2) + "년 " + data.fid.slice(2,4) + "월 회비",
+                price: data.price,
+                date: Time.fromFormatString(data.date)
+              }
+            })
+            console.log(d);
+          });
           this.payments = [
             {
               value: true,
