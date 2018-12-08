@@ -1,40 +1,26 @@
 <template>
-    <div>
-      <v-select
-        :items="Array.from({length:20}, (x, i)=> (2010+i))"
-        v-model="time.year"
-        label="연도"
-        attach></v-select>
-      <v-select
-        :items="Array.from({length:20}, (x, i)=> (2010+i))"
-        v-model="time.month"
-        label="월"
-        attach></v-select>
-      <v-select
-        :items="Array.from({length:20}, (x, i)=> (2010+i))"
-        v-model="time.date"
-        label="일"
-        attach></v-select>
+    <div style="width: 100%; text-align:center">
+      <v-date-picker v-if="selectDate" v-model="date" :reactive="true" :color="'#aaa'"></v-date-picker>
     </div>
 </template>
 
 <script>
     export default {
       name: "TimePicker",
-      props: ['value'],
+      props: ['value', 'selectDate'],
       data() {
         return {
-          time: this.value
+          time: this.value,
+          date: new Date().toISOString().substr(0, 10) // "2012-12-08"
         }
       },
       methods: {
         update() {
           this.$emit('input', this.time);
-        }
+        },
       }
     }
 </script>
 
 <style scoped>
-
 </style>
