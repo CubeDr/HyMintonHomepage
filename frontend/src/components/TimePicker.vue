@@ -41,7 +41,7 @@
         >
           <v-text-field
             slot="activator"
-            v-model="start"
+            v-model="formattedStart"
             label="시작시간"
             prepend-icon="event"
             readonly
@@ -67,7 +67,7 @@
         >
           <v-text-field
             slot="activator"
-            v-model="end"
+            v-model="formattedEnd"
             label="종료시간"
             prepend-icon="event"
             readonly
@@ -98,10 +98,28 @@
           endDialog: false
         }
       },
+      computed: {
+        formattedStart() {
+          return this.formatTime(this.start);
+        },
+        formattedEnd() {
+          return this.formatTime(this.end);
+        }
+      },
       methods: {
         update() {
           this.$emit('input', this.time);
         },
+        formatTime(t) {
+          let h = parseInt(t.substr(0, 2));
+          let m = parseInt(t.substr(3, 5));
+          let ampm = h<12?"오전":"오후";
+          if(h > 12) h -= 12;
+
+          let result = ampm + " " + h + "시";
+          if(m > 0) result += " " + m + "분";
+          return result;
+        }
       }
     }
 </script>
