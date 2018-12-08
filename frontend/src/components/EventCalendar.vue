@@ -27,9 +27,9 @@
 </template>
 
 <script>
-    import { eventBus } from "@/main";
+  import {eventBus} from "@/main";
 
-    export default {
+  export default {
       name: "EventCalendar",
       props: {
         year: {
@@ -107,10 +107,13 @@
     border-collapse: collapse;
     margin: auto;
     border: 2px solid lightgray;
+    box-shadow: 3px 3px 5px 1px lightgray;
   }
 
   thead {
     background: #eee;
+    text-align: center;
+    font-weight: 700;
   }
 
   td {
