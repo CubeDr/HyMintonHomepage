@@ -30,7 +30,16 @@
             { text: '금액', value: 'price' },
             { text: '납부일', value: 'date' }
           ],
-          payments: [
+          payments: []
+        }
+      },
+      created() {
+        this.loadPaymentInfo();
+      },
+      methods: {
+        loadPaymentInfo() {
+          // load from url
+          this.payments = [
             {
               value: true,
               name: '12월 회비',
@@ -62,7 +71,7 @@
               price: '10,000원',
               date: '2018년 12월 08일'
             },
-          ]
+          ];
         }
       }
     }

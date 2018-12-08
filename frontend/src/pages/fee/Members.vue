@@ -32,7 +32,14 @@
             {text: '미납', value: 'npaid'},
             {text: '마지막 납부일', value: 'lastPaid'}
           ],
-          payments: [
+          payments: []
+        }
+      },
+      methods: {
+        loadUserPaymentInfo() {
+          // ... load from url
+
+          this.payments = [
             {
               value: true,
               name: '김현이',
@@ -42,6 +49,9 @@
             }
           ]
         }
+      },
+      created() {
+        this.loadUserPaymentInfo();
       }
     }
 </script>
