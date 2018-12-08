@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="control">
-      <v-btn @click="writeClick()">공지 작성</v-btn>
+      <v-btn v-if="userId >= 4" @click="writeClick()">공지 작성</v-btn>
     </div>
     <table>
       <thead>
@@ -28,9 +28,9 @@
 
 <script>
 
-    import {eventBus} from "../main";
+  import {eventBus} from "../main";
 
-    export default {
+  export default {
         name: "NoticeList",
       data() {
         return {
@@ -47,6 +47,11 @@
             console.log(result.data);
             this.notices = result.data.slice(0, 10);
           })
+      },
+      computed: {
+        userId() {
+          return this.$store.state.user.authLevel;
+        }
       }
     }
 </script>
