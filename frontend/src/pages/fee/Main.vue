@@ -8,13 +8,11 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-
   export default {
     name: "Main",
     computed: {
         userId() {
-          return Vue.prototype.$userId;
+          return this.$store.state.user.id;
         }
     }
   }

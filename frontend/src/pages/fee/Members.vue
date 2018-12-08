@@ -7,7 +7,7 @@
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="$router.push({name:'FeeUserPage', params:{'id': props.item.id}})">
+          <tr @click="$router.push({name:'FeeUserPage', params:{'id': userId}})">
             <td>{{ props.item.name }}</td>
             <td class="text-xs-center">{{ props.item.paid }}</td>
             <td class="text-xs-center">{{ props.item.npaid }}</td>
@@ -45,7 +45,7 @@
             {
               value: true,
               name: '김현이',
-              id: 2014003990,
+              id: '2014003990',
               paid: 100,
               npaid: 0,
               lastPaid: '2018-12-08'
@@ -55,6 +55,11 @@
       },
       created() {
         this.loadUserPaymentInfo();
+      },
+      computed: {
+        userId() {
+          return this.$store.state.user.id;
+        }
       }
     }
 </script>
