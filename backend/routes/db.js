@@ -39,6 +39,25 @@ router.post('/college/new', function(req, res, next){
   })
 })
 
+// 단과대 리스트 api
+router.get('/college/:id', function(req, res, next){
+  var id = parseInt(req.params.id, 10);
+  var uname;
+  if (id == 0)
+    uname = "한양대"
+  else
+    uname = "한양여대"
+
+  connection.query("SELECT * FROM College \
+                    WHERE UnvID=?", [uname], function(err, rows, fields){
+    if(err){
+      res.send(400);
+      throw err;
+    }
+    res.send(rows);    
+  })
+})
+
 // 학과 생성 api
 router.post('/dept/new', function(req, res, next){
   var cname = req.body.cname;
@@ -51,6 +70,19 @@ router.post('/dept/new', function(req, res, next){
       throw err;
     }
     res.send(200);    
+  })
+})
+
+// 학과 리스트 api
+router.get('/dept/:id', function(req, res, next){
+  var cname = req.params.id;
+  connection.query("SELECT * FROM Department \
+                    WHERE ClgID=?", [cname], function(err, rows, fields){
+    if(err){
+      res.send(400);
+      throw err;
+    }
+    res.send(rows);    
   })
 })
 
@@ -102,6 +134,37 @@ router.post('/user/login', function(req, res, next){
   })
 })
 
+// User - 수정 - 비밀번호
+router.post('/user/mod/pw', function(req, res, next){
+  var id = req.body.id;
+  var pw = req.body.newpw;
+
+  connection.query("UPDATE User\
+                    SET password = password(?)\
+                    WHERE UserID=?;", [pw,id],function(err, rows, fields){
+    if(err){
+      console.log("비밀번호 수정 오류!");
+      res.send(400);
+    }
+    res.send(200);    
+  })
+})
+
+// User - 수정 - 권한
+router.post('/user/mod/pw', function(req, res, next){
+  var id = req.body.id;
+  var auth = req.body.auth;
+
+  connection.query("UPDATE User\
+                    SET authority = ?\
+                    WHERE UserID= ? ;", [auth,id],function(err, rows, fields){
+    if(err){
+      console.log("권한 수정 오류!");
+      res.send(400);
+    }
+    res.send(200);    
+  })
+})
 
 
 // notice - list
@@ -112,6 +175,7 @@ router.get('/notice/list', function(req, res, next){
                     ORDER BY ndate DESC, NoticeID ASC limit 20;", function(err, rows, fields){
     if(err){
       console.log("/notice/list error");
+      res.send(400);
       throw err;
     }
     res.send(rows)    
@@ -130,7 +194,7 @@ router.get('/notice/:id', function(req, res, next){
                     WHERE NoticeID=?;", [id, id],function(err, rows, fields){
     if(err){
       console.log("게시글 조회 오류!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows)    
@@ -196,7 +260,7 @@ router.get('/payment/all', function(req, res, next){
                     ORDER BY u.UserID DESC, f.FeeID ASC;", function(err, rows, fields){
     if(err){
       console.log("회원별 납부 현황 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -210,7 +274,7 @@ router.get('/payment/nopay', function(req, res, next){
                     WHERE paid = 0;", function(err, rows, fields){
     if(err){
       console.log("회비 미납자 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -226,7 +290,7 @@ router.get('/payment/:id', function(req, res, next){
                     ORDER BY FID ASC;", [id], function(err, rows, fields){
     if(err){
       console.log("본인 회비 납부 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -243,7 +307,7 @@ router.get('/payment/:id/:cnt', function(req, res, next){
                     ORDER BY FID DESC LIMIT ?;", [id, cnt], function(err, rows, fields){
     if(err){
       console.log("본인 회비 납부 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -261,7 +325,7 @@ router.post('/payment/mod', function(req, res, next){
                     WHERE FID=? AND UID=?", [date, fee, id], function(err, rows, fields){
     if(err){
       console.log("회비 수정 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -282,7 +346,7 @@ router.post('/fee/new', function(req, res, next){
                     WHERE FeeID = ?;", [date, price,date], function(err, rows, fields){
     if(err){
       console.log("회비 추가 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -316,7 +380,7 @@ router.get('/event/:ym', function(req, res, next){
   function(err, rows, fields){
     if(err){
       console.log("해당 연월 행사날짜 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -341,7 +405,7 @@ router.get('/event/:ym/:d', function(req, res, next){
   function(err, rows, fields){
     if(err){
       console.log("해당 날짜 행사 조회 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -361,7 +425,7 @@ router.post('/event/new', function(req, res, next){
   function(err, rows, fields){
     if(err){
       console.log("행사 추가 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -377,7 +441,7 @@ router.get('/order/list', function(req, res, next){
   function(err, rows, fields){
     if(err){
       console.log("주문 목록 읽어오기 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
@@ -394,7 +458,7 @@ router.post('/order/new', function(req, res, next){
   function(err, rows, fields){
     if(err){
       console.log("셔틀콕 주문 추가 실패!");
-      res.send(-1);
+      res.send(400);
       throw err;
     }
     res.send(rows);
