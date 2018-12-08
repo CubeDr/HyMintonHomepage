@@ -80,12 +80,6 @@
         </v-dialog>
       </v-flex>
 
-      <v-flex xs6>
-        <v-text-field label="참여자수" type="number"></v-text-field>
-      </v-flex>
-      <v-flex xs6>
-        <v-text-field label="게스트수" type="number"></v-text-field>
-      </v-flex>
     </v-layout>
   </v-container>
 </template>

@@ -13,12 +13,24 @@
         <v-card-title class="headline">일정 추가</v-card-title>
         <v-card-text>
           <v-form v-model="addEvent.valid">
-            <v-text-field
-              v-model="addEvent.title"
-              :counter="20"
-              label="일정 제목"
-              required></v-text-field>
-            <TimePicker :select-date="false" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
+
+            <v-container grid-list-md>
+              <v-layout row wrap>
+                <v-text-field
+                  v-model="addEvent.title"
+                  :counter="20"
+                  label="일정 제목"
+                  required></v-text-field>
+                <v-flex xs12>
+                  <TimePicker :select-date="false" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
+                </v-flex>
+
+                <v-flex xs12>
+                  <v-text-field label="참여자수" type="number"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+
           </v-form>
           <v-card-actions>
             <v-spacer></v-spacer>
