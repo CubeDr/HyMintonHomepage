@@ -167,7 +167,6 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  overflow: hidden;
 }
 .hover{
   transition: 0.5s;
@@ -201,5 +200,6 @@
 .h0 {
   height: 0;
   box-shadow: None;
+  overflow: hidden;
 }
 </style>
