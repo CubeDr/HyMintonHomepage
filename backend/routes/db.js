@@ -5,18 +5,104 @@ var dbconfig = require('../config/dbconfig.js');
 var connection = mysql.createConnection(dbconfig);
 var path = require('path')
 
+
+// 이름 리턴
 router.get('/name/:id', function(req, res, next){
-  var id = parseInt(req.params.id, 10)
-  connection.query("SELECT lname,fname \
-                    FROM User \
-                    WHERE UserID=?;", [id], function(err, rows, fields){
+  try{
+    var id = parseInt(req.params.id, 10)
+    connection.query("SELECT lname,fname \
+                      FROM User \
+                      WHERE UserID=?;", [id], function(err, rows, fields){
+      if(err){
+        console.log("/notice/list error");
+        throw err;
+      }
+      res.send(rows)    
+  })}
+  catch(err){
+    console.log("/name/id error");
+  }
+})
+
+// 단과대 생성 api
+router.post('/college/new', function(req, res, next){
+  var cname = req.body.cname;
+  var uname = req.body.uname;
+
+  connection.query("INSERT INTO College(CollegeID, UnvID) \
+                    VALUES(?, ?)", [cname, uname], function(err, rows, fields){
     if(err){
-      console.log("/notice/list error");
+      res.send(400);
       throw err;
     }
-    res.send(rows)    
+    res.send(200);    
   })
 })
+
+// 학과 생성 api
+router.post('/dept/new', function(req, res, next){
+  var cname = req.body.cname;
+  var dname = req.body.dname;
+
+  connection.query("INSERT INTO Department(DeptID, ClgID) \
+                    VALUES(?, ?)", [dname, cname], function(err, rows, fields){
+    if(err){
+      res.send(400);
+      throw err;
+    }
+    res.send(200);    
+  })
+})
+
+// User - 회원가입
+router.post('/user/new', function(req, res, next){
+  var id = req.body.id;
+  var pw = req.body.pw;
+  var lname = req.body.lname;
+  var fname = req.body.fname;
+  var auth = req.body.authority;
+  var dname = req.body.dname;
+  
+  connection.query("INSERT INTO User(UserID, password, lname, fname, authority, DID) \
+                    VALUES(?,password(?),?,?,?,?)", [id, pw, lname, fname, auth, dname],
+  function(err, rows, fields){
+    if(err){
+      res.send(400);
+      throw err;
+    }
+    res.send(200);    
+  })
+})
+
+// User - 로그인
+router.post('/user/login', function(req, res, next){
+  var id = req.body.id;
+  var pw = req.body.pw;
+  
+  connection.query("SELECT COUNT(*) as cnt \
+                    FROM User \
+                    WHERE UserID=? AND password=password(?)", [id, pw],
+  function(err, rows, fields){
+    if(err){
+      res.send(400);
+      throw err;
+    }
+    if(rows.cnt == 1)
+    {
+      connection.query("SELECT UserID as id, lname, fname, authority, DID as dname \
+                        FROM User \
+                        WHERE UserID=?", [id],
+        function(err2, rows2, fields2){
+          res.send(rows);
+        })
+    }
+    else{
+      res.send(400);
+    }
+  })
+})
+
+
 
 // notice - list
 router.get('/notice/list', function(req, res, next){
@@ -38,10 +124,12 @@ router.get('/notice/:id', function(req, res, next){
   connection.query("SELECT n.NoticeID as id, n.title as title, u.fname as fname, u.lname as lname\
                             , n.ndate as date, n.hits as hits, n.ncontent as content\
                     FROM Notice n, User u \
-                    WHERE n.UID=u.UserID AND n.NoticeID=? \
-                    ORDER BY n.ndate DESC, n.NoticeID ASC limit 1;", [id],function(err, rows, fields){
+                    WHERE n.UID=u.UserID AND n.NoticeID=? ;\
+                    UPDATE Notice\
+                    SET hits = hits+1\
+                    WHERE NoticeID=?;", [id, id],function(err, rows, fields){
     if(err){
-      console.log("해당 게시물이 삭제되거나 변경되었습니다.");
+      console.log("게시글 조회 오류!");
       res.send(-1);
       throw err;
     }
@@ -55,8 +143,6 @@ router.post('/notice/new', function(req, res, next){
   var content = req.body.content;
   var title = req.body.title;
 
-  console.log(id);
-  console.log(content);
   connection.query("INSERT INTO Notice(title, ndate, ncontent, UID)\
                     VALUES (?, NOW(), ?, ?);", [title, content, id],function(err, rows, fields){
     if(err){
@@ -66,6 +152,41 @@ router.post('/notice/new', function(req, res, next){
     res.send(200);    
   })
 })
+
+// notice - 게시물 수정
+router.post('/notice/mod', function(req, res, next){
+  var id = req.body.id;
+  var nid = req.body.nid;
+  var content = req.body.content;
+  var title = req.body.title;
+
+  connection.query("UPDATE Notice\
+                    SET title = ?, ncontent=?\
+                    WHERE NoticeID=? AND UID=?;", [title, content,nid,id],function(err, rows, fields){
+    if(err){
+      console.log("게시물 수정 오류!");
+      res.send(400);
+    }
+    res.send(200);    
+  })
+})
+
+// notice - 게시물 삭제
+router.post('/notice/del', function(req, res, next){
+  var nid = req.body.nid;
+  var id = req.body.id;
+
+  connection.query("DELETE FROM Notice \
+                    WHERE NoticeID = ? AND UID= ?;", [nid, id],
+  function(err, rows, fields){
+    if(err){
+      console.log("게시물 삭제 오류!");
+      res.send(400);
+    }
+    res.send(200);    
+  })
+})
+
 
 // 회비 - 회원별 납부현황
 router.get('/payment/all', function(req, res, next){
@@ -129,8 +250,27 @@ router.get('/payment/:id/:cnt', function(req, res, next){
   })
 })
 
+// 회비 - 수정
+router.post('/payment/mod', function(req, res, next){
+  var id = req.body.id;
+  var fee = req.body.fee;
+  var date = req.body.date;
+  
+  connection.query("UPDATE Payment\
+                    SET pdate=?, paid=1\
+                    WHERE FID=? AND UID=?", [date, fee, id], function(err, rows, fields){
+    if(err){
+      console.log("회비 수정 실패!");
+      res.send(-1);
+      throw err;
+    }
+    res.send(rows);
+  })
+})
+
+
 // 회비 - 추가
-router.get('/fee/new', function(req, res, next){
+router.post('/fee/new', function(req, res, next){
   var date = req.body.date;
   var price = req.body.price;
   
@@ -148,6 +288,7 @@ router.get('/fee/new', function(req, res, next){
     res.send(rows);
   })
 })
+
 
 
 
@@ -193,7 +334,7 @@ router.get('/event/:ym/:d', function(req, res, next){
 
   console.log(date1)
   console.log(date2)
-  connection.query("SELECT EventID, estarttime, eendtime \
+  connection.query("SELECT ename as name, estarttime as start, eendtime as end, member\
                     FROM Event \
                     WHERE ? <= eendtime AND\
                           ? >= estarttime", [date1, date2],
@@ -208,14 +349,15 @@ router.get('/event/:ym/:d', function(req, res, next){
 })
 
 // 행사 - 추가
-router.get('/event/new', function(req, res, next){
+router.post('/event/new', function(req, res, next){
   var name = req.body.name;
   var place = req.body.place;
   var stime = req.body.time.start;
   var etime = req.body.time.end;
+  var member = req.body.member;
 
-  connection.query("INSERT INTO Event(ename, place, estarttime, eendtime) \
-                    VALUES( ?,?,?,?  )", [name, place, stime, etime],
+  connection.query("INSERT INTO Event(ename, place, estarttime, eendtime, member) \
+                    VALUES( ?,?,?,?,?  )", [name, place, stime, etime,member],
   function(err, rows, fields){
     if(err){
       console.log("행사 추가 실패!");
@@ -243,7 +385,7 @@ router.get('/order/list', function(req, res, next){
 })
 
 //셔틀콕 주문
-router.get('/order/new', function(req, res, next){
+router.post('/order/new', function(req, res, next){
   var id = req.body.id;
   var amount = req.body.amount;
   var content = req.body.content;
