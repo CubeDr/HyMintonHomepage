@@ -16,7 +16,7 @@
       <tbody>
       <tr v-for="notice in notices">
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
-        <td><nobr>{{ notice.title }}</nobr></td>
+        <td><nobr>{{ notice.name }}</nobr></td>
         <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
         <td class="center"><nobr>{{ notice.date }}</nobr></td>
         <td class="center"><nobr>{{ notice.hits }}</nobr></td>

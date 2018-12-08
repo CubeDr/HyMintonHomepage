@@ -18,16 +18,23 @@
               <v-layout row wrap>
                 <v-flex xs12>
                   <v-text-field
-                    v-model="addEvent.title"
+                    v-model="addEvent.name"
                     :counter="20"
                     label="일정 제목"
                     required></v-text-field>
                 </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="addEvent.place"
+                    :counter="20"
+                    label="장소"
+                    required></v-text-field>
+                </v-flex>
 
                 <b>시작시간</b>
-                <TimePicker :value="addEvent.startTime" @input="(e) => addEvent.startTime = e"></TimePicker>
+                <TimePicker :value="addEvent.time.start" @input="(e) => addEvent.time.start = e"></TimePicker>
                 <b>종료시간</b>
-                <TimePicker :value="addEvent.endTime" @input="(e) => addEvent.endTime = e"></TimePicker>
+                <TimePicker :value="addEvent.time.end" @input="(e) => addEvent.time.end = e"></TimePicker>
 
 
                 <v-flex xs12>
@@ -47,7 +54,7 @@
 
       <!-- 일정 리스트 -->
       <div class="card hover" v-for="e in events">
-        <div class="title">{{ e.title }}</div>
+        <div class="title">{{ e.name }}</div>
         <div class="divider"></div>
         <div class="component grid37">
           <div class="startTimeTitle">시작 시간</div>
@@ -79,10 +86,12 @@
       return {
         dialog: false,
         addEvent: {
-          valid: false,
-          title: '',
-          startTime: new Time(2018, 12, 8, 16, 0),
-          endTime: new Time(2018, 12, 8, 19, 0)
+          name: '',
+          place: '',
+          time: {
+            start: new Time(2018, 12, 8, 16, 0),
+            end: new Time(2018, 12, 8, 19, 0)
+          }
         },
         events: []
       }
@@ -99,10 +108,12 @@
       },
       openDialog() {
         this.addEvent = {
-          valid: false,
-          title: '',
-          startTime: new Time(2018, 12, 8, 16, 0),
-          endTime: new Time(2018, 12, 8, 19, 0)
+          name: '',
+          place: '',
+          time: {
+            start: new Time(2018, 12, 8, 16, 0),
+            end: new Time(2018, 12, 8, 19, 0)
+          }
         };
         this.dialog = true;
       },
@@ -111,25 +122,39 @@
       },
       saveDialog() {
         console.log(this.addEvent);
+        this.$http.post('http://115.140.236.238:14707/db/event/new', {
+          name: this.addEvent.name,
+          place: this.addEvent.place,
+          time: {
+            start: this.addEvent.time.start.formatString,
+            end: this.addEvent.time.end.formatString
+          }
+        }).then((res) => {
+          this.load();
+          this.dialog = false;
+        });
+      },
+      load() {
+        let url = `http://115.140.236.238:14707/db/event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`;
+        this.$http.get(url).then((res) => {
+          this.events = res.data.map((data) => {
+            let title = data.name;
+            let st = Time.fromFormatString(data.start);
+            let et = Time.fromFormatString(data.end);
+            let p = data.member==null?0:data.member;
+
+            return {
+              name: title,
+              startTime: st,
+              endTime: et,
+              participants: p
+            }
+          })
+        });
       }
     },
     created() {
-      let url = `http://115.140.236.238:14707/db/event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`;
-      this.$http.get(url).then((res) => {
-        this.events = res.data.map((data) => {
-          let title = data.name;
-          let st = Time.fromFormatString(data.start);
-          let et = Time.fromFormatString(data.end);
-          let p = data.member==null?0:data.member;
-
-          return {
-            title: title,
-            startTime: st,
-            endTime: et,
-            participants: p
-          }
-        })
-      });
+      this.load();
     }
   }
 </script>
