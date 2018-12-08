@@ -1,14 +1,48 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap align-center justify-center>
-      Members
+      <v-data-table
+        :headers="headers"
+        :items="payments"
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-center">{{ props.item.paid }}</td>
+          <td class="text-xs-center">{{ props.item.npaid }}</td>
+          <td class="text-xs-center">{{ props.item.lastPaid }}</td>
+        </template>
+      </v-data-table>
     </v-layout>
   </v-container>
 </template>
 
 <script>
     export default {
-        name: "Members"
+      name: "Members",
+      data () {
+        return {
+          headers: [
+            {
+              text: '회원명',
+              align: 'left',
+              value: 'name'
+            },
+            {text: '납부', value: 'paid'},
+            {text: '미납', value: 'npaid'},
+            {text: '마지막 납부일', value: 'lastPaid'}
+          ],
+          payments: [
+            {
+              value: true,
+              name: '김현이',
+              paid: 100,
+              npaid: 0,
+              lastPaid: '2018-12-08'
+            }
+          ]
+        }
+      }
     }
 </script>
 
