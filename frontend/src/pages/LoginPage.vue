@@ -29,9 +29,10 @@
 </template>
 
 <script>
-    import router from '../router';
+  import Vue from 'vue'
+  import router from '../router';
 
-    export default {
+  export default {
         name: "LoginPage",
         data() {
           return {
@@ -45,6 +46,12 @@
         methods: {
           submit() {
             console.log('login request');
+            let userId = this.id;
+            let userName = '김현이';
+            let authLevel = 5;
+            Vue.prototype.$userId = userId;
+            Vue.prototype.$userName = userName;
+            Vue.prototype.$authLevel = authLevel;
             router.push({name: 'NoticePage'});
           },
           clear() {
