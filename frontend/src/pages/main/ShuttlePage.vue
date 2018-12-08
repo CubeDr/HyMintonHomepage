@@ -98,6 +98,7 @@
 
 <script>
   export default {
+    name: 'ShuttlePage',
     data: () => ({
       stock: 100,
       dialog1: false,

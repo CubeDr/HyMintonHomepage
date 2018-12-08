@@ -1,7 +1,14 @@
 <template>
-    <div>
-      <v-form id='login' ref="form" v-model="valid">
+
+    <v-layout
+      align-center
+      column
+      justify-center
+    >
+     
+      <v-form id='login' ref="form" v-model="valid" >
         <v-text-field
+        
           v-model="id"
           :rules="idRules"
           label="학번"
@@ -25,8 +32,11 @@
         <v-btn @click="clear">clear</v-btn>
         <v-btn id="cancelButton" @click="back">취소</v-btn>
       </v-form>
-    </div>
+       </v-layout>
+  
 </template>
+    
+
 
 <script>
   import router from '../router';

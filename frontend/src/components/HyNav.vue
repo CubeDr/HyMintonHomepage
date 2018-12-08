@@ -33,6 +33,14 @@
                      @navBtnClick="noticeClick($event)">
           <i class="fas fa-shopping-cart fa-lg"></i>
         </HyNavButton>
+         <HyNavButton class="navButton"
+                     title="회원관리"
+                     page="Admin"
+                     :current="page"
+                     :selectColor="selectColor"
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-users fa-lg"></i>
+        </HyNavButton>
       </div>
     </div>
 </template>
