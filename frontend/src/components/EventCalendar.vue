@@ -82,7 +82,6 @@
             calendar.push(week);
           }
 
-          console.log(calendar);
           return calendar;
         },
 

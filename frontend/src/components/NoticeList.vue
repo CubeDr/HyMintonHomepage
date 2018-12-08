@@ -44,7 +44,6 @@
       },
       created() {
           this.$http.get('https://jsonplaceholder.typicode.com/posts').then((result) => {
-            console.log(result.data);
             this.notices = result.data.slice(0, 10);
           })
       },
