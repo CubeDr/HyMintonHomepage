@@ -22,8 +22,8 @@
           ></v-text-field>
           <v-date-picker v-model="date" no-title scrollable color="blue">
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="dateDialog = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.dateDialog.save(date)">OK</v-btn>
+            <v-btn flat color="primary" @click="dateDialog = false">취소</v-btn>
+            <v-btn flat color="primary" @click="$refs.dateDialog.save(date)">확인</v-btn>
           </v-date-picker>
         </v-dialog>
       </v-flex>
@@ -48,8 +48,8 @@
           ></v-text-field>
           <v-time-picker :landscape="true" :full-width="true" color="blue" v-model="start">
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="startDialog = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.startDialog.save(start)">OK</v-btn>
+            <v-btn flat color="primary" @click="startDialog = false">취소</v-btn>
+            <v-btn flat color="primary" @click="$refs.startDialog.save(start)">확인</v-btn>
           </v-time-picker>
         </v-dialog>
       </v-flex>
@@ -74,8 +74,8 @@
           ></v-text-field>
           <v-time-picker :landscape="true" :full-width="true" color="blue" v-model="end">
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="endDialog = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.endDialog.save(end)">OK</v-btn>
+            <v-btn flat color="primary" @click="endDialog = false">취소</v-btn>
+            <v-btn flat color="primary" @click="$refs.endDialog.save(end)">확인</v-btn>
           </v-time-picker>
         </v-dialog>
       </v-flex>
