@@ -6,6 +6,7 @@ import NoticePage from '../pages/main/NoticePage'
 import EventPage from '../pages/main/EventPage'
 import FeePage from '../pages/main/FeePage'
 import ShuttlePage from '../pages/main/ShuttlePage'
+import AdminPage from '../pages/main/AdminPage'
 import LoginPage from '../pages/LoginPage'
 import EventListPage from '../pages/event/EventListPage'
 import EventCalendar from '../components/EventCalendar'
@@ -42,6 +43,12 @@ export default new Router({
               component: EventListPage
             }
           ]
+        },
+        {
+          path: '/admin',
+          name: 'AdminPage',
+          component: AdminPage,
+         
         },
         {
           path: '/fee',
