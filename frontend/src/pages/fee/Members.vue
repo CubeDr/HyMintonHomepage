@@ -7,10 +7,12 @@
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.name }}</td>
-          <td class="text-xs-center">{{ props.item.paid }}</td>
-          <td class="text-xs-center">{{ props.item.npaid }}</td>
-          <td class="text-xs-center">{{ props.item.lastPaid }}</td>
+          <tr @click="$router.push({name:'FeeUserPage', params:{'id': props.item.id}})">
+            <td>{{ props.item.name }}</td>
+            <td class="text-xs-center">{{ props.item.paid }}</td>
+            <td class="text-xs-center">{{ props.item.npaid }}</td>
+            <td class="text-xs-center">{{ props.item.lastPaid }}</td>
+          </tr>
         </template>
       </v-data-table>
     </v-layout>
@@ -43,6 +45,7 @@
             {
               value: true,
               name: '김현이',
+              id: 2014003990,
               paid: 100,
               npaid: 0,
               lastPaid: '2018-12-08'
