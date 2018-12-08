@@ -2,7 +2,7 @@
   <div id="feePage">
     <router-view></router-view>
     <v-btn class="w100" @click="$router.push({name: 'FeeUserPage', params: {id: '1'}})">본인 회비 납부 조회</v-btn>
-    <v-btn class="w100">회원별 회비 납부 현황</v-btn>
+    <v-btn class="w100" @click="$router.push({name: 'FeeMembersPage'})">회원별 회비 납부 현황</v-btn>
     <v-btn class="w100">회비 미납자 조회</v-btn>
   </div>
 </template>
