@@ -17,9 +17,9 @@
       <tr v-for="notice in notices">
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
         <td><nobr>{{ notice.title }}</nobr></td>
-        <td class="center"><nobr>{{ notice.userId }}</nobr></td>
-        <td class="center"><nobr>{{ notice.body }}</nobr></td>
-        <td class="center"><nobr>{{ notice.userId }}</nobr></td>
+        <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
+        <td class="center"><nobr>{{ notice.date }}</nobr></td>
+        <td class="center"><nobr>{{ notice.hits }}</nobr></td>
       </tr>
       </tbody>
     </table>
@@ -43,8 +43,8 @@
           }
       },
       created() {
-          this.$http.get('https://jsonplaceholder.typicode.com/posts').then((result) => {
-            this.notices = result.data.slice(0, 10);
+          this.$http.get('http://115.140.236.238:14707/db/notice/list').then((result) => {
+            this.notices = result.data;
           })
       },
       computed: {
