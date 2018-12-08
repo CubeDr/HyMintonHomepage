@@ -340,17 +340,23 @@ router.post('/fee/new', function(req, res, next){
   var price = req.body.price;
   
   connection.query("INSERT INTO Fee(FeeID, price)\
-                    VALUES(?, ?);\
-                    INSERT INTO Payment(FID,UID)\
-                    SELECT FeeID, UserID\
-                    FROM User, Fee\
-                    WHERE FeeID = ?;", [date, price,date], function(err, rows, fields){
+                    VALUES(?, ?);", [date, price], function(err, rows, fields){
     if(err){
       console.log("회비 추가 실패!");
       res.send(400);
       throw err;
     }
-    res.send(rows);
+  })
+  connection.query("INSERT INTO Payment(FID,UID)\
+                    SELECT FeeID, UserID\
+                    FROM User, Fee\
+                    WHERE FeeID = ?;", [date, price,date], function(err, rows, fields){
+    if(err){
+      console.log("지불정보 생성 추가 실패!");
+      res.send(400);
+      throw err;
+    }
+    res.send(200);
   })
 })
 
