@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="week in getCalendarArray()">
-            <td v-for="date in week" @click="select(date)">{{ date }}</td>
+            <td v-for="date in week" :class="{event: eventDates.includes(date)}" @click="select(date)">{{ date }}</td>
           </tr>
         </tbody>
       </table>
@@ -30,74 +30,93 @@
   import {eventBus} from "@/main";
 
   export default {
-      name: "EventCalendar",
-      props: {
-        year: {
-          type: Number,
-          default() {
-            return new Date().getFullYear();
-          }
-        },
-        month: {
-          type: Number,
-          default() {
-            return new Date().getMonth() + 1;
-          }
+    name: "EventCalendar",
+    props: {
+      year: {
+        type: Number,
+        default() {
+          return new Date().getFullYear();
         }
       },
-      data() {
-        return {
-          displayYear: this.year,
-          displayMonth: this.month
-        }
-      },
-      methods: {
-        select(date) {
-          eventBus.$emit('dayClick', this.displayYear, this.displayMonth, date);
-        },
-        getStartOffset() {
-          return new Date(this.displayYear, this.displayMonth-1).getDay();
-        },
-
-        getLastDate() {
-          return new Date(this.displayYear, this.displayMonth, 0).getDate();
-        },
-
-        getCalendarArray() {
-          let calendar = [];
-          let offset = this.getStartOffset();
-          let week = [];
-          let date = 1;
-          const lastDate = this.getLastDate();
-          // first week
-          for(let i=0; i<offset; i++) week.push(' ');
-          for(let i=offset; i<7; i++) week.push(date++);
-          calendar.push(week);
-
-          while(date <= lastDate) {
-            week = [];
-            let i=0;
-            for(; i<7 && date <= lastDate; i++) week.push(date++);
-            for(; i<7; i++) week.push(' ');
-            calendar.push(week);
-          }
-
-          return calendar;
-        },
-
-        changeMonth(delta) {
-          this.displayMonth += delta;
-          while(this.displayMonth > 12) {
-            this.displayMonth -= 12;
-            this.displayYear++;
-          }
-          while(this.displayMonth <= 0) {
-            this.displayMonth += 12;
-            this.displayYear--;
-          }
+      month: {
+        type: Number,
+        default() {
+          return new Date().getMonth() + 1;
         }
       }
+    },
+    data() {
+      return {
+        displayYear: this.year,
+        displayMonth: this.month,
+        eventDates: []
+      }
+    },
+    methods: {
+      select(date) {
+        eventBus.$emit('dayClick', this.displayYear, this.displayMonth, date);
+      },
+      getStartOffset() {
+        return new Date(this.displayYear, this.displayMonth-1).getDay();
+      },
+
+      getLastDate() {
+        return new Date(this.displayYear, this.displayMonth, 0).getDate();
+      },
+
+      getCalendarArray() {
+        let calendar = [];
+        let offset = this.getStartOffset();
+        let week = [];
+        let date = 1;
+        const lastDate = this.getLastDate();
+        // first week
+        for(let i=0; i<offset; i++) week.push(' ');
+        for(let i=offset; i<7; i++) week.push(date++);
+        calendar.push(week);
+
+        while(date <= lastDate) {
+          week = [];
+          let i=0;
+          for(; i<7 && date <= lastDate; i++) week.push(date++);
+          for(; i<7; i++) week.push(' ');
+          calendar.push(week);
+        }
+
+        return calendar;
+      },
+
+      changeMonth(delta) {
+        this.eventDates = [];
+        this.displayMonth += delta;
+        while(this.displayMonth > 12) {
+          this.displayMonth -= 12;
+          this.displayYear++;
+        }
+        while(this.displayMonth <= 0) {
+          this.displayMonth += 12;
+          this.displayYear--;
+        }
+        this.getEventDates();
+      },
+      getEventDates() {
+        this.$http.get(`http://115.140.236.238:14707/db/event/${this.displayYear}${this.displayMonth<10?'0'+this.displayMonth:this.displayMonth}`).then(
+          (res) => {
+            this.eventDates = [];
+            res.data.forEach((data) => {
+              let st = data.start;
+              let et = data.end;
+              for(let i=new Date(st).getDate(); i<=new Date(et).getDate(); i++)
+                if(!this.eventDates.includes(i)) this.eventDates.push(i);
+            });
+          }
+        );
+      }
+    },
+    created() {
+      this.getEventDates();
     }
+  }
 </script>
 
 <style scoped>
@@ -136,5 +155,9 @@
   .pickButton {
     width: 50px;
     height: 100%;
+  }
+
+  .event {
+    background: lightblue;
   }
 </style>
