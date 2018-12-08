@@ -12,9 +12,9 @@
 </template>
 
 <script>
-    import {eventBus} from "../main";
+  import {eventBus} from "../main";
 
-    export default {
+  export default {
       name: "NoticeWrite",
       data() {
         return {
@@ -29,6 +29,15 @@
           }
         },
         submit() {
+          console.log('전송');
+          this.$http.post('http://115.140.236.238:14707/db/notice/new', {
+            id: '2014001001',
+            content: this.content,
+            title: this.title
+          }).then(res => {
+            console.log(res);
+            eventBus.$emit('wroteNotice');
+          });
         }
       }
     }
