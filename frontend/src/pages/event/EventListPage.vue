@@ -18,7 +18,7 @@
               :counter="20"
               label="일정 제목"
               required></v-text-field>
-            <TimePicker :select-date="true" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
+            <TimePicker :select-date="false" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
           </v-form>
           <v-card-actions>
             <v-spacer></v-spacer>

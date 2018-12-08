@@ -1,6 +1,7 @@
 <template>
     <div style="width: 100%; text-align:center">
       <v-dialog
+        v-if="selectDate"
         ref="dialog"
         v-model="dateDialog"
         :return-value.sync="date"
