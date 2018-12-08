@@ -24,11 +24,11 @@ export default class Time {
   }
 
   static fromFormatString(str) {
-    let year = parseInt(time.slice(0, 4));
-    let month = parseInt(time.slice(5, 7));
-    let date = parseInt(time.slice(8, 10));
-    let hour = parseInt(time.slice(11, 13));
-    let min = parseInt(time.slice(14, 16));
+    let year = parseInt(str.slice(0, 4));
+    let month = parseInt(str.slice(5, 7));
+    let date = parseInt(str.slice(8, 10));
+    let hour = parseInt(str.slice(11, 13));
+    let min = parseInt(str.slice(14, 16));
 
     return new Time(year, month, date, hour, min);
   }
