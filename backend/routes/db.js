@@ -87,13 +87,14 @@ router.post('/user/login', function(req, res, next){
       res.send(400);
       throw err;
     }
-    if(rows.cnt == 1)
+
+    if(rows[0].cnt > 0)
     {
       connection.query("SELECT UserID as id, lname, fname, authority, DID as dname \
                         FROM User \
                         WHERE UserID=?", [id],
         function(err2, rows2, fields2){
-          res.send(rows);
+          res.send(rows2);
         })
     }
     else{
