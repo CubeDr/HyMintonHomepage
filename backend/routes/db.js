@@ -119,7 +119,8 @@ router.post('/user/login', function(req, res, next){
       res.send(400);
       throw err;
     }
-    if(rows.cnt == 1)
+    console.log(rows)
+    if(rows.cnt > 0)
     {
       connection.query("SELECT UserID as id, lname, fname, authority, DID as dname \
                         FROM User \
@@ -284,9 +285,9 @@ router.get('/payment/nopay', function(req, res, next){
 // 회비 - 본인 납부 조회
 router.get('/payment/:id', function(req, res, next){
   var id = parseInt(req.params.id, 10)
-  connection.query("SELECT FID as fid, pdate as date\
-                    FROM Payment \
-                    WHERE UID = ?\
+  connection.query("SELECT FID as fid, pdate as date, price \
+                    FROM Payment, Fee\
+                    WHERE UID = ? AND FID=FeeID\
                     ORDER BY FID ASC;", [id], function(err, rows, fields){
     if(err){
       console.log("본인 회비 납부 조회 실패!");
