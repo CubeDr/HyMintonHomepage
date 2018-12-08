@@ -2,8 +2,8 @@
   <div id="feePage">
     <router-view></router-view>
     <v-btn class="w100" @click="$router.push({name: 'FeeUserPage', params: {id: userId}})">본인 회비 납부 조회</v-btn>
-    <v-btn v-if="userId>=4" class="w100" @click="$router.push({name: 'FeeMembersPage'})">회원별 회비 납부 현황</v-btn>
-    <v-btn v-if="userId>=4" class="w100" @click="$router.push({name: 'FeeNPaysPage'})">회비 미납자 조회</v-btn>
+    <v-btn v-if="userAuth>=4" class="w100" @click="$router.push({name: 'FeeMembersPage'})">회원별 회비 납부 현황</v-btn>
+    <v-btn v-if="userAuth>=4" class="w100" @click="$router.push({name: 'FeeNPaysPage'})">회비 미납자 조회</v-btn>
   </div>
 </template>
 
@@ -11,9 +11,12 @@
   export default {
     name: "Main",
     computed: {
-        userId() {
-          return this.$store.state.user.id;
-        }
+        userAuth() {
+          return this.$store.state.user.authLevel;
+        },
+      userId() {
+        return this.$store.state.user.id;
+      }
     }
   }
 </script>
