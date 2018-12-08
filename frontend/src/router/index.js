@@ -12,6 +12,7 @@ import EventCalendar from '../components/EventCalendar'
 import FeeMainPage from '@/pages/fee/Main'
 import FeeUserPage from '@/pages/fee/User'
 import FeeMembersPage from '@/pages/fee/Members'
+import FeeNPaysPage from '@/pages/fee/NPays'
 
 Vue.use(Router);
 
@@ -58,6 +59,10 @@ export default new Router({
               path: '/members',
               name: 'FeeMembersPage',
               component: FeeMembersPage
+            }, {
+              path: '/npays',
+              name: 'FeeNPaysPage',
+              component: FeeNPaysPage
             }
           ]
         },
