@@ -340,7 +340,7 @@ router.post('/fee/new', function(req, res, next){
   var price = req.body.price;
   
   connection.query("INSERT INTO Fee(FeeID, price)\
-                    VALUES(?, ?;\
+                    VALUES(?, ?);\
                     INSERT INTO Payment(FID,UID)\
                     SELECT FeeID, UserID\
                     FROM User, Fee\
