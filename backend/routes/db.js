@@ -20,8 +20,9 @@ router.get('/name/:id', function(req, res, next){
 
 // notice - list
 router.get('/notice/list', function(req, res, next){
-  connection.query("SELECT NoticeID as id, title, ndate as date, hits \
-                    FROM Notice \
+  connection.query("SELECT NoticeID as id, lname, fname, title, ndate as date, hits \
+                    FROM Notice, User \
+                    WHERE UID=UserID\
                     ORDER BY ndate DESC, NoticeID ASC limit 20;", function(err, rows, fields){
     if(err){
       console.log("/notice/list error");
@@ -49,19 +50,20 @@ router.get('/notice/:id', function(req, res, next){
 })
 
 // notice - 새 게시물 추가
-router.get('/notice/new', function(req, res, next){
+router.post('/notice/new', function(req, res, next){
   var id = req.body.id;
   var content = req.body.content;
   var title = req.body.title;
 
+  console.log(id);
+  console.log(content);
   connection.query("INSERT INTO Notice(title, ndate, ncontent, UID)\
                     VALUES (?, NOW(), ?, ?);", [title, content, id],function(err, rows, fields){
     if(err){
       console.log("게시물 작성 오류!");
-      res.send(-1);
-      throw err;
+      res.send(400);
     }
-    res.send(rows)    
+    res.send(200);    
   })
 })
 
