@@ -42,15 +42,9 @@
         </div>
         <div class="divider"></div>
         <div class="participants box-size">
-          <div class="component grid2323">
-            <div class="opTitle">참가 인원</div>
-            <div class="opData center">{{ e.ourParticipants }}명</div>
-            <div class="gpTitle">게스트 인원</div>
-            <div class="gpData center">{{ e.guests }}명</div>
-          </div>
           <div class="component grid37">
-            <div class="tpTitle">총 참여 인원</div>
-            <div class="tpData center">{{ e.ourParticipants + e.guests }}명</div>
+            <div class="tpTitle">참가 인원</div>
+            <div class="tpData center">{{ e.participants }}명</div>
           </div>
         </div>
       </div>
@@ -78,50 +72,42 @@
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }, {
               title: 'OB 교류전',
               startTime: new Time(2018, 12, 8, 16, 0),
               endTime: new Time(2018, 12, 8, 19, 0),
-              ourParticipants: 20,
-              guests: 10
+              participants: 20
             }
           ]
         }
