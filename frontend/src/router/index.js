@@ -9,6 +9,7 @@ import ShuttlePage from '../pages/main/ShuttlePage'
 import LoginPage from '../pages/LoginPage'
 import EventListPage from '../pages/event/EventListPage'
 import EventCalendar from '../components/EventCalendar'
+import FeeMainPage from '@/pages/fee/Main'
 
 Vue.use(Router);
 
@@ -39,7 +40,17 @@ export default new Router({
             }
           ]
         },
-        {path: '/fee', name: 'FeePage', component: FeePage},
+        {
+          path: '/fee',
+          component: FeePage,
+          children: [
+            {
+              path: '/',
+              name: 'FeePage',
+              component: FeeMainPage
+            }
+          ]
+        },
         {path: '/shuttle', name: 'ShuttlePage', component: ShuttlePage}
       ]
     }, {
