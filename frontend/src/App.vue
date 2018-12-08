@@ -1,10 +1,11 @@
 <template>
-  <div id="app">
-    <header>
+  <v-app>
+    <v-content>
       <HyHeader class="unSelectable"/>
-    </header>
-    <router-view :background="background"></router-view>
-  </div>
+      <router-view :background="background"></router-view>
+    </v-content>
+  </v-app>
+
 </template>
 
 <script>
