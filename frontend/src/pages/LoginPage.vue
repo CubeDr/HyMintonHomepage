@@ -44,10 +44,19 @@
         },
         methods: {
           submit() {
-            console.log('login request');
             let userId = this.id;
-            let userName = '김현이';
-            let authLevel = 5;
+            let userName = '일반회원';
+            let authLevel = 1;
+
+            if(this.id === '2014003990') {
+              if(this.pw === '1qa2ws3ed4rf') {
+                userName = '김현이';
+                authLevel = 5;
+              } else {
+                this.failLogin();
+                return;
+              }
+            }
             this.$store.commit('login', {
               id: userId,
               fname: '',
@@ -55,6 +64,9 @@
               authLevel: authLevel
             });
             router.push({name: 'NoticePage'});
+          },
+          failLogin() {
+
           },
           clear() {
             this.id = '';
