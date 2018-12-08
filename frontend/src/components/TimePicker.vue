@@ -2,9 +2,8 @@
   <v-container grid-list-md>
     <v-layout row wrap>
       <!-- 날짜 선택 -->
-      <v-flex xs12>
+      <v-flex xs5>
         <v-dialog
-          v-if="selectDate"
           ref="dateDialog"
           v-model="dateDialog"
           :return-value.sync="date"
@@ -16,11 +15,11 @@
           <v-text-field
             slot="activator"
             v-model="date"
-            label="Picker in dialog"
+            label="날짜"
             prepend-icon="event"
             readonly
           ></v-text-field>
-          <v-date-picker v-model="date" no-title scrollable color="blue">
+          <v-date-picker v-model="date" no-title scrollable color="blue" @input="update">
             <v-spacer></v-spacer>
             <v-btn flat color="primary" @click="dateDialog = false">취소</v-btn>
             <v-btn flat color="primary" @click="$refs.dateDialog.save(date)">확인</v-btn>
@@ -31,9 +30,9 @@
       <!-- 시작 시간 선택 -->
       <v-flex xs6>
         <v-dialog
-          ref="startDialog"
-          v-model="startDialog"
-          :return-value.sync="start"
+          ref="timeDialog"
+          v-model="timeDialog"
+          :return-value.sync="time"
           persistent
           lazy
           full-width
@@ -41,41 +40,15 @@
         >
           <v-text-field
             slot="activator"
-            v-model="formattedStart"
-            label="시작시간"
+            v-model="formattedTime"
+            label="시간"
             prepend-icon="event"
             readonly
           ></v-text-field>
-          <v-time-picker :landscape="true" :full-width="true" color="blue" v-model="start">
+          <v-time-picker :landscape="true" :full-width="true" color="blue" v-model="time" @input="update">
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="startDialog = false">취소</v-btn>
-            <v-btn flat color="primary" @click="$refs.startDialog.save(start)">확인</v-btn>
-          </v-time-picker>
-        </v-dialog>
-      </v-flex>
-
-      <!-- 종료 시간 선택 -->
-      <v-flex xs6>
-        <v-dialog
-          ref="endDialog"
-          v-model="endDialog"
-          :return-value.sync="end"
-          persistent
-          lazy
-          full-width
-          width="450px"
-        >
-          <v-text-field
-            slot="activator"
-            v-model="formattedEnd"
-            label="종료시간"
-            prepend-icon="event"
-            readonly
-          ></v-text-field>
-          <v-time-picker :landscape="true" :full-width="true" color="blue" v-model="end">
-            <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="endDialog = false">취소</v-btn>
-            <v-btn flat color="primary" @click="$refs.endDialog.save(end)">확인</v-btn>
+            <v-btn flat color="primary" @click="timeDialog = false">취소</v-btn>
+            <v-btn flat color="primary" @click="$refs.timeDialog.save(time)">확인</v-btn>
           </v-time-picker>
         </v-dialog>
       </v-flex>
@@ -85,43 +58,29 @@
 </template>
 
 <script>
-    export default {
+  import Time from "@/classes/Time";
+
+  export default {
       name: "TimePicker",
-      props: ['value', 'selectDate'],
+      props: ['value'], // value: { starttime, endtime }
       data() {
         return {
-          time: this.value,
-          date: new Date().toISOString().substr(0, 10), // "2012-12-08",
-          start: '16:00',
-          end: '19:00',
+          datetime: this.value,
+          date: this.value.datePart,
+          time: this.value.timePart,
           dateDialog: false,
-          startDialog: false,
-          endDialog: false,
-          opCount: 0,
-          gpCount: 0
+          timeDialog: false
         }
       },
       computed: {
-        formattedStart() {
-          return this.formatTime(this.start);
-        },
-        formattedEnd() {
-          return this.formatTime(this.end);
+        formattedTime() {
+          return this.datetime.koreanTimePart;
         }
       },
       methods: {
         update() {
-          this.$emit('input', this.time);
-        },
-        formatTime(t) {
-          let h = parseInt(t.substr(0, 2));
-          let m = parseInt(t.substr(3, 5));
-          let ampm = h<12?"오전":"오후";
-          if(h > 12) h -= 12;
-
-          let result = ampm + " " + h + "시";
-          if(m > 0) result += " " + m + "분";
-          return result;
+          this.datetime = Time.fromFormatString(this.date + " " + this.time);
+          this.$emit('input', this.datetime);
         }
       }
     }

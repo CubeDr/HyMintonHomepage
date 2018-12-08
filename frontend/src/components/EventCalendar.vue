@@ -28,6 +28,7 @@
 
 <script>
   import {eventBus} from "@/main";
+  import Time from "@/classes/Time";
 
   export default {
     name: "EventCalendar",
@@ -106,7 +107,7 @@
             res.data.forEach((data) => {
               let st = data.start;
               let et = data.end;
-              for(let i=new Date(st).getDate(); i<=new Date(et).getDate(); i++)
+              for(let i=Time.fromFormatString(st).date; i<=Time.fromFormatString(et).date; i++)
                 if(!this.eventDates.includes(i)) this.eventDates.push(i);
             });
           }

@@ -9,12 +9,29 @@ export default class Time {
   }
 
   get formatString() {
+    return this.datePart + ' ' + this.timePart;
+  }
+
+  get datePart() {
     let ss = this.strings;
-    return `${ss.y}/${ss.m}/${ss.d} ${ss.H}:${ss.M}`;
+    return `${ss.y}-${ss.m}-${ss.d}`;
+  }
+
+  get timePart() {
+    let ss = this.strings;
+    return `${ss.H}:${ss.M}`;
   }
 
   get koreanString() {
-    let result = `${this.year}년 ${this.month}월 ${this.date}일 `;
+    return this.koreanDatePart + " " + this.koreanTimePart;
+  }
+
+  get koreanDatePart() {
+    return `${this.year}년 ${this.month}월 ${this.date}일`;
+  }
+
+  get koreanTimePart() {
+    let result = "";
     if(this.hour >= 12) result += '오후 ';
     else result += '오전 ';
 
@@ -33,7 +50,7 @@ export default class Time {
     return new Time(year, month, date, hour, min);
   }
 
-  get toStrings() {
+  get strings() {
     return {
       y: this.year.toString().paddingLeft("0000"),
       m: this.month.toString().paddingLeft("00"),

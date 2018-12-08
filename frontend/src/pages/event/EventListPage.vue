@@ -16,18 +16,22 @@
 
             <v-container grid-list-md>
               <v-layout row wrap>
-                <v-text-field
-                  v-model="addEvent.title"
-                  :counter="20"
-                  label="일정 제목"
-                  required></v-text-field>
-
-                <TimePicker :select-date="false" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
-                <v-flex xs6>
-                  <v-text-field label="참여자수" type="number"></v-text-field>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="addEvent.title"
+                    :counter="20"
+                    label="일정 제목"
+                    required></v-text-field>
                 </v-flex>
-                <v-flex xs6>
-                  <v-text-field label="게스트수" type="number"></v-text-field>
+
+                <b>시작시간</b>
+                <TimePicker :value="addEvent.startTime" @input="(e) => addEvent.startTime = e"></TimePicker>
+                <b>종료시간</b>
+                <TimePicker :value="addEvent.endTime" @input="(e) => addEvent.endTime = e"></TimePicker>
+
+
+                <v-flex xs12>
+                  <v-text-field label="참여자수" type="number"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -35,8 +39,8 @@
           </v-form>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" flat @click="dialog = false">취소</v-btn>
-            <v-btn color="green darken-1" flat @click="dialog = false">추가</v-btn>
+            <v-btn color="red darken-1" flat @click="cancelDialog()">취소</v-btn>
+            <v-btn color="green darken-1" flat @click="saveDialog()">추가</v-btn>
           </v-card-actions>
         </v-card-text>
       </v-card>
@@ -90,19 +94,33 @@
       userId() { return this.$store.state.user.id; }
     },
     methods: {
+      log(e) {
+        console.log(e);
+      },
       openDialog() {
-        // TODO: init dialog
+        this.addEvent = {
+          valid: false,
+          title: '',
+          startTime: new Time(2018, 12, 8, 16, 0),
+          endTime: new Time(2018, 12, 8, 19, 0)
+        };
         this.dialog = true;
+      },
+      cancelDialog() {
+        this.dialog = false;
+      },
+      saveDialog() {
+        console.log(this.addEvent);
       }
     },
     created() {
       let url = `http://115.140.236.238:14707/db/event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`;
       this.$http.get(url).then((res) => {
         this.events = res.data.map((data) => {
-          let title = '행사 ' + data.EventID;
-          let st = Time.fromFormatString(data.estarttime);
-          let et = Time.fromFormatString(data.eendtime);
-          let p = data.EventID;
+          let title = data.name;
+          let st = Time.fromFormatString(data.start);
+          let et = Time.fromFormatString(data.end);
+          let p = data.member==null?0:data.member;
 
           return {
             title: title,
