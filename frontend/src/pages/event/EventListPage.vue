@@ -135,6 +135,13 @@
           // TODO: init dialog
           this.dialog = true;
         }
+      },
+      created() {
+        this.$http.get(`http://115.140.236.238:14707/db/event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`).then((res) => {
+          this.events = res.data.map((data) => {
+
+          });
+        });
       }
     }
 </script>
