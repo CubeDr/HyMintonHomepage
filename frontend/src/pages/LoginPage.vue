@@ -44,26 +44,21 @@
         },
         methods: {
           submit() {
-            let userId = this.id;
-            let userName = '일반회원';
-            let authLevel = 1;
-
-            if(this.id === '2014003990') {
-              if(this.pw === '1qa2ws3ed4rf') {
-                userName = '김현이';
-                authLevel = 5;
-              } else {
-                this.failLogin();
-                return;
+            this.$http.post('http://115.140.236.238:14707/db/user/login', {
+                id: this.id,
+                pw: this.pw
+            }).then((res) => {
+              console.log(res);
+              if(res.status != 400) {
+                this.$store.commit('login', {
+                  id: res.data[0].id,
+                  fname: res.data[0].fname,
+                  lname: res.data[0].lname,
+                  authLevel: res.data[0].authority
+                });
+                router.push({name: 'NoticePage'});
               }
-            }
-            this.$store.commit('login', {
-              id: userId,
-              fname: '',
-              lname: userName,
-              authLevel: authLevel
             });
-            router.push({name: 'NoticePage'});
           },
           failLogin() {
 
