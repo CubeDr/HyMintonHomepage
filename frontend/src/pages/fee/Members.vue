@@ -7,7 +7,7 @@
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="$router.push({name:'FeeUserPage', params:{'id': userId}})">
+          <tr @click="$router.push({name:'FeeUserPage', params:{'id': props.item.id}})">
             <td>{{ props.item.name }}</td>
             <td class="text-xs-center">{{ props.item.paid }}</td>
             <td class="text-xs-center">{{ props.item.npaid }}</td>
