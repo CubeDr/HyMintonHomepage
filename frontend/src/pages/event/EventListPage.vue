@@ -18,7 +18,7 @@
               :counter="20"
               label="일정 제목"
               required></v-text-field>
-            <TimePicker :select-date="false" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
+            <TimePicker :select-date="true" :value="addEvent.startTime" @input="e => addEvent.startTime = e"></TimePicker>
           </v-form>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -58,9 +58,10 @@
 </template>
 
 <script>
-    import TimePicker from "@/components/TimePicker";
-    import Time from "@/classes/Time";
-    export default {
+  import TimePicker from "@/components/TimePicker";
+  import Time from "@/classes/Time";
+
+  export default {
       name: "EventListPage",
       components: {TimePicker},
       data() {
