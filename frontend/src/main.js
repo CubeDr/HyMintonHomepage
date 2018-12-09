@@ -29,13 +29,13 @@ const store = new Vuex.Store({
       id: '',
       fname: '',
       lname: '',
-      authLevel: -1
+      auth: -1
     }
   },
   mutations: {
     login(state, info) {
       state.user = {
-        id: info.id, fname: info.fname, lname: info.lname, authLevel: info.authLevel
+        id: info.id, fname: info.fname, lname: info.lname, auth: info.auth
       }
     }
   } ,
