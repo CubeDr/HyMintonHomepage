@@ -16,7 +16,6 @@
                 <template slot="items" slot-scope="props">
                   <tr @click="$router.push({name:'FeeUserPage', params:{'id': props.item.id}})">
                     <td class="text-xs-center">{{ props.item.id }}</td>
-                    <td class="text-xs-center">{{ props.item.name }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -36,7 +35,6 @@
           npays: [],
           headers: [
             {text: '학번', value: 'id', align: 'center', sortable: false},
-            {text: '이름', value: 'name', align: 'center', sortable: false},
           ]
         }
       },
@@ -68,7 +66,7 @@
                 });
               }
             });
-            // console.log(result);
+
             this.npays = result;
           });
         },
