@@ -5,7 +5,7 @@ export default class Name {
   }
 
   get isKorean() {
-    return this.fname.contains('[A-Za-z]') || this.lname.contains('[A-Za-z]');
+    return this.fname.match('[A-Za-z]') || this.lname.match('[A-Za-z]');
   }
 
   get name() {
