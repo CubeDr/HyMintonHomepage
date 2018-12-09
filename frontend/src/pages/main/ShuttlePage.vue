@@ -186,6 +186,7 @@
         this.editDialog = false;
       },
       openOrderDialog() {
+        this.newOrder = { amount:1, content: '' };
         this.orderDialog = true;
       },
       order () {
