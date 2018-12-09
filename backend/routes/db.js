@@ -167,6 +167,19 @@ router.post('/user/mod/auth', function(req, res, next){
   })
 })
 
+// User - 모든 회원
+router.get('/user/all', function(req, res, next){
+  connection.query("SELECT UserID, lname, fname, DID, authority as auth \
+                    FROM User; ",
+  function(err, rows, fields){
+    if(err){
+      res.send(err);
+      throw err;
+    }
+    res.send(rows);    
+  })
+})
+
 
 // notice - list
 router.get('/notice/list', function(req, res, next){
@@ -443,7 +456,7 @@ router.post('/event/new', function(req, res, next){
 
 //셔틀콕 목록
 router.get('/order/list', function(req, res, next){
-  connection.query("SELECT u.UserID as id, o.odate as date, u.lname as lname, u.fname as fname, \
+  connection.query("SELECT o.OrderID as oid, u.UserID as id, o.odate as date, u.lname as lname, u.fname as fname, \
                            amount, o.ocontent as content, paid, given\
                     FROM hymt_db.Order o, User u\
                     WHERE o.UID = u.UserID;", 
@@ -476,13 +489,11 @@ router.post('/order/new', function(req, res, next){
 
 //셔틀콕 재고
 router.get('/order/left', function(req, res, next){
-  connection.query("SELECT u.UserID as id, o.odate as date, u.lname as lname, u.fname as fname, \
-                           amount, o.ocontent as content, paid, given\
-                    FROM hymt_db.Order o, User u\
-                    WHERE o.UID = u.UserID;", 
+  connection.query("SELECT -1 * sum(amount) as sum \
+                    FROM hymt_db.Order", 
   function(err, rows, fields){
     if(err){
-      console.log("주문 목록 읽어오기 실패!");
+      console.log("셔틀콕 재고 계산 실패!");
       res.send(400);
       throw err;
     }
@@ -490,7 +501,24 @@ router.get('/order/left', function(req, res, next){
   })
 })
 
+//셔틀콕 정보 수정
+router.post('/order/mod', function(req, res, next){
+  var id = req.body.id;
+  var oid = req.body.oid;
+  var paid = req.body.paid;
+  var given = req.body.given;
 
-
+  connection.query("UPDATE hymt_db.Order \
+                    SET paid = ?, given = ? \
+                    WHERE UID = ? AND OrderID = ?;",[paid, given, id, oid], 
+  function(err, rows, fields){
+    if(err){
+      console.log("주문 정보 갱신 실패!");
+      res.send(400);
+      throw err;
+    }
+    res.send(200);
+  })
+})
 
 module.exports = router;
