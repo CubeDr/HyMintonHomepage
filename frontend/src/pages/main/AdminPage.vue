@@ -137,7 +137,7 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <tr @click="openAuthDialog( props.item.id )">
+        <tr @click="openAuthDialog( props.item.id, props.item.auth )">
         <td>{{ props.item.id}}</td>
         <td class="text-xs-left">{{ props.item.lname }}</td>
         <td class="text-xs-left">{{ props.item.fname }}</td>
@@ -209,12 +209,12 @@
     initialize () {
       this.lists = [
         {
-            id: '2014003963',
+            id: '2014003990',
            value: false,
            lname: 'Kim',
            fname: 'Jaeguk',
             dep: 'asdfasdf',
-            auth: 0
+            auth: 1
         },
         {
            id: '2014002363',
@@ -222,7 +222,7 @@
            lname: 'Kim',
            fname: 'Hyuni',
             dep: 'asdddf',
-            auth: 0
+            auth: 2
         }
       ]
     },
@@ -266,8 +266,9 @@
         this.openNewPwDialog();
       });
     },
-    openAuthDialog(id) {
+    openAuthDialog(id, oAuth) {
       this.targetId = id;
+      this.newItem.auth = oAuth;
       this.authDialog = true;
     },
     closeAuthDialog() {
@@ -276,8 +277,10 @@
     },
     newAuth() {
       let id = this.targetId;
-      let auth = this.newItem.auth;
-      console.log(id + ", " + auth);
+      let auth = parseInt(this.newItem.auth);
+      this.$http.post('user/mod/auth', { id: id, auth: auth }).then((res) => {
+        console.log(res);
+      });
       this.closeAuthDialog();
     },
     newDepartmentRule() {
