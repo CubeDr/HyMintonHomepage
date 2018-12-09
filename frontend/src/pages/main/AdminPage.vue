@@ -53,7 +53,7 @@
           <v-divider class="mt-5"></v-divider>
           <v-card-actions>
             <v-btn flat @click="close">Cancel</v-btn>
-            <v-btn :disabled="!newValid" color="primary" flat @click="submit">Submit</v-btn>
+            <v-btn :disabled="!newValid" color="primary" flat @click="newSubmit">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -255,7 +255,7 @@
       this.newPwDialog = false;
       this.newPw = '';
     },
-    submit (){
+    newSubmit (){
       let randomPw = (10000000 + parseInt(Math.random()*90000000)).toString();
       this.$http.post('user/new', {
         id: this.newItem.id,
