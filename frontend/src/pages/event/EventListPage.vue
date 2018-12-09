@@ -122,7 +122,7 @@
       },
       saveDialog() {
         console.log(this.addEvent);
-        this.$http.post('db/event/new', {
+        this.$http.post('event/new', {
           name: this.addEvent.name,
           place: this.addEvent.place,
           time: {
@@ -135,7 +135,7 @@
         });
       },
       load() {
-        let url = `http://115.140.236.238:14707/db/event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`;
+        let url = `event/${this.year}${this.month<10?'0'+this.month:this.month}/${this.date}`;
         this.$http.get(url).then((res) => {
           this.events = res.data.map((data) => {
             let title = data.name;

@@ -30,7 +30,7 @@
         },
         submit() {
           console.log('전송');
-          this.$http.post('db/notice/new', {
+          this.$http.post('notice/new', {
             id: '2014001001',
             content: this.content,
             name: this.name
