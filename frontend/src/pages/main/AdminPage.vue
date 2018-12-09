@@ -10,8 +10,8 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog2=true">비밀번호변경</v-btn>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">Sign Up</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="dialog2=true">비밀번호 변경</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">신규 회원 등록</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog1" max-width="500px" >
 <v-layout justify-center>
