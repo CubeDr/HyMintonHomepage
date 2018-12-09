@@ -10,8 +10,8 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog2=true">비밀번호변경</v-btn>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">Sign Up</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="editDialog=true">비밀번호변경</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="orderDialog=true">Sign Up</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog1" max-width="500px" >
 <v-layout justify-center>
@@ -167,8 +167,8 @@
       NewPassword:'',
       formHasErrors: false,
       
-      dialog1: false,
-      dialog2: false,
+      orderDialog: false,
+      editDialog: false,
       dialog3: false,
       search: '',
       headers: [

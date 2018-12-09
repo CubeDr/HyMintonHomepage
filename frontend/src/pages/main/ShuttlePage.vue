@@ -10,9 +10,9 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">셔틀콕 주문</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="openOrderDialog()">셔틀콕 주문</v-btn>
     </v-toolbar>
-    <v-dialog v-model="dialog1" max-width="500px" >
+    <v-dialog v-model="orderDialog" max-width="500px" >
 
       <v-card>
         <v-card-title>
@@ -40,7 +40,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog2" max-width="500px" >
+    <v-dialog v-model="editDialog" max-width="500px" >
 
       <v-card>
         <v-card-title>
@@ -103,8 +103,8 @@
     name: 'ShuttlePage',
     data: () => ({
       stock: 100,
-      dialog1: false,
-      dialog2: false,
+      orderDialog: false,
+      editDialog: false,
       search: '',
       headers: [
         {
@@ -173,7 +173,7 @@
 
       editItem (item) {
         this.editedIndex = this.lists.indexOf(item)
-        this.dialog2 = true
+        this.editDialog = true
       },
 
       deleteItem (item) {
@@ -182,10 +182,12 @@
       },
 
       close () {
-        this.dialog1 = false;
-        this.dialog2 = false;
+        this.orderDialog = false;
+        this.editDialog = false;
       },
-
+      openOrderDialog() {
+        this.orderDialog = true;
+      },
       order () {
         this.$http.post('order/new', {
           amount: this.newOrder.amount,
