@@ -28,7 +28,7 @@
             eventBus.$emit('cancelNoticeWrite');
           }
         },
-        newSubmit() {
+        submit() {
           console.log('전송');
           this.$http.post('notice/new', {
             id: '2014001001',
