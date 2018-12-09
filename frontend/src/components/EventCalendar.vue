@@ -101,7 +101,7 @@
         this.getEventDates();
       },
       getEventDates() {
-        this.$http.get(`http://115.140.236.238:14707/db/event/${this.displayYear}${this.displayMonth<10?'0'+this.displayMonth:this.displayMonth}`).then(
+        this.$http.get(`db/event/${this.displayYear}${this.displayMonth<10?'0'+this.displayMonth:this.displayMonth}`).then(
           (res) => {
             this.eventDates = [];
             res.data.forEach((data) => {

@@ -11,7 +11,9 @@ import axios from 'axios'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false;
-Vue.prototype.$http = axios;
+Vue.prototype.$http = axios.create({
+  baseURL: 'http://115.140.236.238:14707/'
+});
 Vue.use(Vuetify);
 Vue.use(Vuex);
 

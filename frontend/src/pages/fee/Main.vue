@@ -35,7 +35,7 @@
     },
     methods: {
       addFee() {
-        this.$http.post('http://115.140.236.238:14707/db/fee/new', {
+        this.$http.post('db/fee/new', {
           date: this.y.toString() + this.m.toString().paddingLeft('00'),
           price: parseInt(this.price)
         }).then((res) => {

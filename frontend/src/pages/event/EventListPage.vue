@@ -122,7 +122,7 @@
       },
       saveDialog() {
         console.log(this.addEvent);
-        this.$http.post('http://115.140.236.238:14707/db/event/new', {
+        this.$http.post('db/event/new', {
           name: this.addEvent.name,
           place: this.addEvent.place,
           time: {

@@ -43,7 +43,7 @@
           }
       },
       created() {
-          this.$http.get('http://115.140.236.238:14707/db/notice/list').then((result) => {
+          this.$http.get('db/notice/list').then((result) => {
             this.notices = result.data;
           })
       },
