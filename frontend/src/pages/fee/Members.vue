@@ -28,7 +28,7 @@
         return {
           headers: [
             {
-              text: '회원명',
+              text: '학번',
               align: 'left',
               value: 'name'
             },
