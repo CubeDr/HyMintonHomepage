@@ -215,24 +215,17 @@
 
   methods: {
     initialize () {
-      this.lists = [
-        {
-            id: '2014003990',
-           value: false,
-           lname: 'Kim',
-           fname: 'Jaeguk',
-            dep: 'asdfasdf',
-            auth: 1
-        },
-        {
-           id: '2014002363',
-           value: false,
-           lname: 'Kim',
-           fname: 'Hyuni',
-            dep: 'asdddf',
-            auth: 2
-        }
-      ]
+      this.$http.get('user/all').then((res) => {
+          this.lists = res.data.map((data) => {
+            return {
+              id: data.UserID,
+              lname: data.lname,
+              fname: data.fname,
+              dep: data.DID,
+              auth: data.auth
+            };
+          })
+      });
     },
     close () {
       this.newDialog = false
