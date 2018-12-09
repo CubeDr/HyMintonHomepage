@@ -67,12 +67,12 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.date }}</td>
-        <td class="text-xs-right">{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.ta }}</td>
+        <td>{{ props.item.date.koreanDatePart }}</td>
+        <td class="text-xs-right">{{ props.item.name }} ({{props.item.uid }})</td>
+        <td class="text-xs-right">{{ props.item.amount }}</td>
         <td class="text-xs-right">{{ getPaid(props.item.paid) }}</td>
-        <td class="text-xs-right">{{ getProvided(props.item.provided) }}</td>
-        <td class="text-xs-left">{{ props.item.etc }}</td>
+        <td class="text-xs-right">{{ getProvided(props.item.given) }}</td>
+        <td class="text-xs-left">{{ props.item.content }}</td>
         <td class="justify-center layout px-0">
           <v-icon
             small
@@ -97,6 +97,8 @@
 </template>
 
 <script>
+  import Time from "../../classes/Time";
+
   export default {
     name: 'ShuttlePage',
     data: () => ({
@@ -111,36 +113,25 @@
           sortable: true,
           value: 'date'
         },
-        { text: '신청인', value: 'name' },
-        { text: '신청개수 (타)', value: 'ta' },
+        { text: '신청인(학번)', value: 'name' },
+        { text: '신청개수 (타)', value: 'amount' },
         { text: '지불', value: 'paid' },
-        { text: '지급', value: 'provided' },
-        { text: '비고', value: 'etc' },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: '지급', value: 'given' },
+        { text: '비고', value: 'content' },
+        { text: '수정', value: 'edit', sortable: false }
       ],
       lists: [],
-      editedItem: {
-        date: '2019-01-01',
-        value: false,
-        name: '김재국',
-        ta: 0,
-        etc: '',
-        paid: false,
-        provided: false
-      },
-      defaultItem: {
-        date: '2019-01-01',
-        value: false,
-        name: '김재국',
-        ta: 0,
-        etc: '',
-        paid: false,
-        provided: false
-      }
+      editedItem: {},
+      defaultItem: {}
     }),
 
     computed: {
-
+      userAuth() {
+        return this.$store.state.user.authLevel;
+      },
+      userId() {
+        return this.$store.state.user.id;
+      }
     },
 
     watch: {
@@ -150,29 +141,29 @@
     },
 
     created () {
-      this.initialize()
+      this.load()
     },
 
     methods: {
-      initialize () {
+      load () {
         this.lists = [
           {
-            date: '2018-12-05',
-            value: false,
-            name: '김현이',
-            ta: 10,
-            etc: '회장이 좀 쓰겠다는데...',
+            date: Time.fromFormatString('2018-12-05 00:00'),
+            uid: 'Administrator',
+            name: '관리자',
+            amount: 10,
+            content: '회장이 좀 쓰겠다는데...',
             paid: true,
-            provided: true,
+            given: true,
           },
           {
-            date: '2018-12-07',
-            value: false,
-            name: '김병찬',
-            ta: 10,
-            etc: '오랜만에 좀 칠게요',
-            paid: false,
-            provided: false,
+            date: Time.fromFormatString('2018-12-05 00:00'),
+            uid: 'Administrator',
+            name: '관리자',
+            amount: 10,
+            content: '회장이 좀 쓰겠다는데...',
+            paid: true,
+            given: true,
           }
         ]
       },
