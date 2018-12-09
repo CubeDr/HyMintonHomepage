@@ -53,7 +53,7 @@
           }
         },
         methods: {
-          newSubmit() {
+          submit() {
             this.$http.post('db/user/login', {
                 id: this.id,
                 pw: this.pw
