@@ -11,7 +11,7 @@
 
       <v-spacer></v-spacer>
       <v-btn color="primary" dark class="mb-2" @click="openPwDialog">비밀번호 변경</v-btn>
-      <v-btn color="primary" dark class="mb-2" @click="openNewDialog()">신규 회원 등록</v-btn>
+      <v-btn v-if="userAuth >= 4" color="primary" dark class="mb-2" @click="openNewDialog()">신규 회원 등록</v-btn>
        <v-btn color="primary" dark class="mb-2" :to ="homelink">Log Out</v-btn>
     </v-toolbar>
     <v-dialog v-model="newDialog" max-width="500px" >
@@ -232,7 +232,8 @@
   },
 
   computed: {
-    errorDialog() { return this.errorMessage !== ''; }
+    errorDialog() { return this.errorMessage !== ''; },
+    userAuth() { return this.$store.state.user.auth; }
   },
 
   methods: {
@@ -255,6 +256,7 @@
       this.authDialog = false
     },
     openNewDialog() {
+      if(this.userAuth()<4) return;
       this.newItem = {
         sid: '',
           lname: '',
