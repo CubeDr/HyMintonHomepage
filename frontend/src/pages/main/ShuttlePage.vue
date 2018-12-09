@@ -75,6 +75,7 @@
         <td class="text-xs-left">{{ props.item.content }}</td>
         <td class="justify-center layout px-0">
           <v-icon
+            v-if="userAuth >= 4"
             small
             class="mr-2"
             @click="editItem(props.item)"
@@ -82,6 +83,7 @@
             edit
           </v-icon>
           <v-icon
+            v-if="userAuth >= 4 || userId === props.item.id"
             small
             @click="deleteItem(props.item)"
           >
