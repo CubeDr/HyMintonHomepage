@@ -12,7 +12,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios.create({
-  baseURL: 'http://115.140.236.238:14707/'
+  baseURL: 'http://115.140.236.238:14707/db/'
 });
 Vue.use(Vuetify);
 Vue.use(Vuex);
