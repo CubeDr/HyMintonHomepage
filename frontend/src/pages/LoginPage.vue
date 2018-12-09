@@ -4,8 +4,39 @@
       align-center
       column
       justify-center
+    > 
+        <v-dialog
+      v-model="dialog"
+      width="500"
     >
-     
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          로그인 오류
+        </v-card-title>
+
+        <v-card-text>
+         학번 혹은 비밀번호가 잘못되었습니다.
+          </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            @click="dialog = false"
+          >
+            취소
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
       <v-form id='login' ref="form" v-model="valid" >
         <v-text-field
         
@@ -45,15 +76,17 @@
         name: "LoginPage",
         data() {
           return {
+            dialog: false,
             valid: false,
             id: '',
             pw: '',
             idRules: [(id) => id.length > 8 || '8자 이상 입력해야 합니다.'],
-            pwRules: [(pw) => pw.length > 8 || '8자 이상 입력해야 합니다.']
+            pwRules: []
           }
         },
         methods: {
           submit() {
+            this.failLogin()
             this.$http.post('user/login', {
                 id: this.id,
                 pw: this.pw
@@ -71,7 +104,8 @@
             });
           },
           failLogin() {
-
+            this.dialog = true;
+            
           },
           clear() {
             this.id = '';

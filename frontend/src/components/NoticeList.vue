@@ -16,12 +16,47 @@
       <tbody>
       <tr v-for="notice in notices">
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
-        <td><nobr>{{ notice.name }}</nobr></td>
+        <td><nobr @click ="openNoticeDialog( notice )">{{ notice.title }}</nobr></td>
         <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
         <td class="center"><nobr>{{ notice.date }}</nobr></td>
         <td class="center"><nobr>{{ notice.hits }}</nobr></td>
       </tr>
       </tbody>
+
+<v-dialog
+      v-model="dialog"
+      width="500"
+    >
+
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+
+        >
+          공지제목 <v-spacer></v-spacer>{{noticeWriter}}
+        </v-card-title>
+
+        <v-card-text>
+        ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            @click="dialog = false"
+          >
+            확인
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
     </table>
   </div>
 </template>
@@ -34,10 +69,24 @@
         name: "NoticeList",
       data() {
         return {
-          notices: []
+          dialog: false,
+          notices: [],
+          noticeName:'',
+          noticeWriter:'',
+          noticeDate:'',
+          noticeContent:''
+
         }
       },
       methods: {
+        openNoticeDialog( notice ){
+          this.noticeName = notice.name;
+          this.noticeWriter = notice.lname+notice.fname;
+          this.noticeDate = notice.date;
+          //?
+          this.noticeContent = notice.content;
+          this.dialog = true;
+        },
           writeClick() {
             eventBus.$emit("writeClick");
           }

@@ -34,7 +34,7 @@
           <i class="fas fa-shopping-cart fa-lg"></i>
         </HyNavButton>
          <HyNavButton class="navButton"
-                     title="회원관리"
+                     title="회원정보"
                      page="Admin"
                      :current="page"
                      :selectColor="selectColor"
