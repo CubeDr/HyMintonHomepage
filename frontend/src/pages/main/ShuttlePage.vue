@@ -211,7 +211,7 @@
         this.close()
       },
       editProvided (){
-        this.lists[this.editedIndex].provided = !this.lists[this.editedIndex].provided
+        this.lists[this.editedIndex].given = !this.lists[this.editedIndex].given
         this.close()
       }
     }
