@@ -95,14 +95,30 @@ router.post('/user/new', function(req, res, next){
   var auth = req.body.authority;
   var dname = req.body.dname;
   
-  connection.query("INSERT INTO User(UserID, password, lname, fname, authority, DID) \
-                    VALUES(?,password(?),?,?,?,?)", [id, pw, lname, fname, auth, dname],
+  connection.query("SELECT COUNT(*) as cnt \
+                    FROM User \
+                    WHERE UserID=?", [id, pw],
   function(err, rows, fields){
     if(err){
       res.send(400);
       throw err;
     }
-    res.send(200);    
+    if(rows[0].cnt < 1)
+    {
+      connection.query("INSERT INTO User(UserID, password, lname, fname, authority, DID) \
+                        VALUES(?,password(?),?,?,?,?)", [id, pw, lname, fname, auth, dname],
+      function(err, rows, fields){
+        if(err){
+          console.log("회원가입 시도 실패!")
+          res.send(400);
+          throw err;
+        }
+        res.send(200);    
+    })}
+    else{
+      console.log("중복 학번 회원가입 시도!")
+      res.send(401);
+    }
   })
 })
 
