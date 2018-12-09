@@ -31,7 +31,7 @@
             flat
             @click="dialog = false"
           >
-            취소
+            확인
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -86,7 +86,6 @@
         },
         methods: {
           submit() {
-            this.failLogin()
             this.$http.post('user/login', {
                 id: this.id,
                 pw: this.pw
@@ -100,8 +99,8 @@
                   auth: res.data[0].authority
                 });
                 router.push({name: 'NoticePage'});
-              }
-            });
+              } else this.failLogin();
+            }).catch(error => this.failLogin());
           },
           failLogin() {
             this.dialog = true;
