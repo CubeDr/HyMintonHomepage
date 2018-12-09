@@ -218,10 +218,7 @@ router.get('/notice/:id', function(req, res, next){
   connection.query("SELECT n.NoticeID as id, n.title as title, u.fname as fname, u.lname as lname\
                             , n.ndate as date, n.hits as hits, n.ncontent as content\
                     FROM Notice n, User u \
-                    WHERE n.UID=u.UserID AND n.NoticeID=? ;\
-                    UPDATE Notice\
-                    SET hits = hits+1\
-                    WHERE NoticeID=?;", [id, id],function(err, rows, fields){
+                    WHERE n.UID=u.UserID AND n.NoticeID=? ;", [id],function(err, rows, fields){
     if(err){
       console.log("게시글 조회 오류!");
       res.send(400);
@@ -229,6 +226,16 @@ router.get('/notice/:id', function(req, res, next){
     }
     res.send(rows)    
   })
+  connection.query("UPDATE Notice\
+                    SET hits = hits+1\
+                    WHERE NoticeID=?;", [id],function(err, rows, fields){
+    if(err){
+      console.log("게시글 조회 수 증가 오류!");
+      res.send(400);
+      throw err;
+    }  
+  })
+
 })
 
 // notice - 새 게시물 추가
