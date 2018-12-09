@@ -151,8 +151,9 @@
         this.$http.get('order/list').then((res) => {
           this.lists = res.data.map((data) => {
             return {
+              oid: data.oid,
               date: Time.fromFormatString(data.date),
-              uid: '?',
+              uid: data.id,
               name: new Name(data.fname, data.lname),
               amount: data.amount,
               paid: data.paid===1,
@@ -203,12 +204,27 @@
         });
       },
       editPaid (){
-        this.lists[this.editedIndex].paid = !this.lists[this.editedIndex].paid
-        this.close()
+        this.lists[this.editedIndex].paid = !this.lists[this.editedIndex].paid;
+        this.close();
+        this.updateOrderInfo();
       },
       editProvided (){
-        this.lists[this.editedIndex].given = !this.lists[this.editedIndex].given
-        this.close()
+        this.lists[this.editedIndex].given = !this.lists[this.editedIndex].given;
+        this.close();
+        this.updateOrderInfo();
+      },
+      updateOrderInfo() {
+        let oid = this.lists[this.editedIndex].oid;
+        let obj = {
+          id: this.$store.state.user.id,
+          oid: oid,
+          paid: this.lists[this.editedIndex].paid?1:0,
+          given: this.lists[this.editedIndex].given?1:0
+        };
+        console.log(obj);
+        this.$http.post('order/mod', obj).then((res) => {
+          console.log(res);
+        });
       }
     }
   }
