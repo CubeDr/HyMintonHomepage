@@ -10,7 +10,7 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="pwDialog=true">비밀번호 변경</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="openPwDialog">비밀번호 변경</v-btn>
       <v-btn color="primary" dark class="mb-2" @click="openNewDialog()">신규 회원 등록</v-btn>
     </v-toolbar>
     <v-dialog v-model="newDialog" max-width="500px" >
@@ -70,10 +70,10 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-text-field v-model="NewPassword" label="New Password"></v-text-field>
+          <v-text-field v-model="newPw" label="New Password"></v-text-field>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="close">취소</v-btn>
-          <v-btn color="blue darken-1" flat @click="changePassword">변경</v-btn>
+          <v-btn color="blue darken-1" flat @click="closePwDialog">취소</v-btn>
+          <v-btn color="blue darken-1" flat @click="updatePw">변경</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -163,13 +163,13 @@
 
     newValid: false,
 
-    newDialog: false,
-    pwDialog: false,
+    newDialog: false, // 회원가입
+    pwDialog: false, // 비밀번호 변경
 
-    authDialog: false,
+    authDialog: false, // 권한 변경
     targetId: 0,
 
-    newPwDialog: false,
+    newPwDialog: false, // 회원가입 후 비밀번호 표시
     newPw: '',
 
     search: '',
@@ -231,9 +231,6 @@
       this.pwDialog = false
       this.authDialog = false
     },
-    changePassword() {
-      this.close()
-    },
     openNewDialog() {
       this.newItem = {
         sid: '',
@@ -282,6 +279,23 @@
         console.log(res);
       });
       this.closeAuthDialog();
+    },
+    openPwDialog() {
+      this.newPw = '';
+      this.pwDialog = true;
+    },
+    closePwDialog() {
+      this.newPw = '';
+      this.pwDialog = false;
+    },
+    updatePw() {
+      this.$http.post('user/mod/pw', {
+        id: this.$store.state.user.id,
+        newpw: this.newPw
+      }).then((res) => {
+        console.log(res);
+      });
+      this.closePwDialog();
     },
     newDepartmentRule() {
       if(this.newItem.dep === '') return '학부를 입력해주세요';
