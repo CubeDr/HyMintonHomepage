@@ -83,7 +83,7 @@
             edit
           </v-icon>
           <v-icon
-            v-if="userAuth >= 4 || userId === props.item.id"
+            v-if="!props.item.paid && !props.item.given && (userAuth >= 4 || userId === item.id)"
             small
             @click="deleteItem(props.item)"
           >
