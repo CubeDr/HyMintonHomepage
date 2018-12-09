@@ -101,7 +101,7 @@
         this.getEventDates();
       },
       getEventDates() {
-        this.$http.get(`db/event/${this.displayYear}${this.displayMonth<10?'0'+this.displayMonth:this.displayMonth}`).then(
+        this.$http.get(`event/${this.displayYear}${this.displayMonth<10?'0'+this.displayMonth:this.displayMonth}`).then(
           (res) => {
             this.eventDates = [];
             res.data.forEach((data) => {

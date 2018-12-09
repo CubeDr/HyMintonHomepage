@@ -10,9 +10,9 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">셔틀콕 주문</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="openOrderDialog()">셔틀콕 주문</v-btn>
     </v-toolbar>
-    <v-dialog v-model="dialog1" max-width="500px" >
+    <v-dialog v-model="orderDialog" max-width="500px" >
 
       <v-card>
         <v-card-title>
@@ -21,16 +21,13 @@
 
         <v-card-text >
           <v-container grid-list-md>
-            <v-layout wrap>
-
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.ta" label="신청개수(타)"></v-text-field>
+            <v-layout row wrap>
+              <v-flex xs3>
+                <v-text-field v-model="newOrder.amount" type="number" label="신청개수(타)"></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.etc" label="신청내용"></v-text-field>
+              <v-flex xs9>
+                <v-text-field v-model="newOrder.content" label="신청내용"></v-text-field>
               </v-flex>
-
-
             </v-layout>
             잔여개수(타): {{stock}}
           </v-container>
@@ -43,7 +40,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog2" max-width="500px" >
+    <v-dialog v-model="editDialog" max-width="500px" >
 
       <v-card>
         <v-card-title>
@@ -67,14 +64,15 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.date }}</td>
-        <td class="text-xs-right">{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.ta }}</td>
-        <td class="text-xs-right">{{ getPaid(props.item.paid) }}</td>
-        <td class="text-xs-right">{{ getProvided(props.item.provided) }}</td>
-        <td class="text-xs-left">{{ props.item.etc }}</td>
+        <td class="text-xs-left">{{ props.item.date.koreanDatePart }}</td>
+        <td class="text-xs-left">{{ props.item.name.name }} ({{props.item.uid }})</td>
+        <td class="text-xs-left">{{ props.item.amount }}</td>
+        <td class="text-xs-left">{{ getPaid(props.item.paid) }}</td>
+        <td class="text-xs-left">{{ getProvided(props.item.given) }}</td>
+        <td class="text-xs-left">{{ props.item.content }}</td>
         <td class="justify-center layout px-0">
           <v-icon
+            v-if="userAuth >= 4"
             small
             class="mr-2"
             @click="editItem(props.item)"
@@ -82,6 +80,7 @@
             edit
           </v-icon>
           <v-icon
+            v-if="!props.item.paid && !props.item.given && (userAuth >= 4 || userId === props.item.id)"
             small
             @click="deleteItem(props.item)"
           >
@@ -97,12 +96,15 @@
 </template>
 
 <script>
+  import Time from "../../classes/Time";
+  import Name from "../../classes/Name";
+
   export default {
     name: 'ShuttlePage',
     data: () => ({
       stock: 100,
-      dialog1: false,
-      dialog2: false,
+      orderDialog: false,
+      editDialog: false,
       search: '',
       headers: [
         {
@@ -111,36 +113,27 @@
           sortable: true,
           value: 'date'
         },
-        { text: '신청인', value: 'name' },
-        { text: '신청개수 (타)', value: 'ta' },
+        { text: '신청인(학번)', value: 'name' },
+        { text: '신청개수 (타)', value: 'amount' },
         { text: '지불', value: 'paid' },
-        { text: '지급', value: 'provided' },
-        { text: '비고', value: 'etc' },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: '지급', value: 'given' },
+        { text: '비고', value: 'content' },
+        { text: '수정', value: 'edit', sortable: false }
       ],
       lists: [],
-      editedItem: {
-        date: '2019-01-01',
-        value: false,
-        name: '김재국',
-        ta: 0,
-        etc: '',
-        paid: false,
-        provided: false
-      },
-      defaultItem: {
-        date: '2019-01-01',
-        value: false,
-        name: '김재국',
-        ta: 0,
-        etc: '',
-        paid: false,
-        provided: false
+      newOrder: {
+        amount: 1,
+        content: ''
       }
     }),
 
     computed: {
-
+      userAuth() {
+        return this.$store.state.user.authLevel;
+      },
+      userId() {
+        return this.$store.state.user.id;
+      }
     },
 
     watch: {
@@ -150,31 +143,27 @@
     },
 
     created () {
-      this.initialize()
+      this.load();
     },
 
     methods: {
-      initialize () {
-        this.lists = [
-          {
-            date: '2018-12-05',
-            value: false,
-            name: '김현이',
-            ta: 10,
-            etc: '회장이 좀 쓰겠다는데...',
-            paid: true,
-            provided: true,
-          },
-          {
-            date: '2018-12-07',
-            value: false,
-            name: '김병찬',
-            ta: 10,
-            etc: '오랜만에 좀 칠게요',
-            paid: false,
-            provided: false,
-          }
-        ]
+      load () {
+        this.$http.get('order/list').then((res) => {
+          this.lists = res.data.map((data) => {
+            return {
+              date: Time.fromFormatString(data.date),
+              uid: '?',
+              name: new Name(data.fname, data.lname),
+              amount: data.amount,
+              paid: data.paid===1,
+              given: data.given===1,
+              content: data.content
+            };
+          });
+        });
+        this.$http.get('order/left').then((res) => {
+          this.stock = res.data[0].sum;
+        });
       },
       getPaid(b){
         if(b) return '지불완료'
@@ -187,8 +176,7 @@
 
       editItem (item) {
         this.editedIndex = this.lists.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog2 = true
+        this.editDialog = true
       },
 
       deleteItem (item) {
@@ -197,28 +185,29 @@
       },
 
       close () {
-        this.dialog1 = false
-        this.dialog2 = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-
-        }, 300)
+        this.orderDialog = false;
+        this.editDialog = false;
       },
-
+      openOrderDialog() {
+        this.newOrder = { amount:1, content: '' };
+        this.orderDialog = true;
+      },
       order () {
-
-        this.stock = this.stock - this.editedItem.ta
-        this.editedItem =
-          this.lists.push(this.editedItem)
-
-        this.close()
+        this.$http.post('order/new', {
+          amount: this.newOrder.amount,
+          id: this.$store.state.user.id,
+          content: this.newOrder.content
+        }).then((res) => {
+          console.log(res);
+          this.close();
+        });
       },
       editPaid (){
         this.lists[this.editedIndex].paid = !this.lists[this.editedIndex].paid
         this.close()
       },
       editProvided (){
-        this.lists[this.editedIndex].provided = !this.lists[this.editedIndex].provided
+        this.lists[this.editedIndex].given = !this.lists[this.editedIndex].given
         this.close()
       }
     }

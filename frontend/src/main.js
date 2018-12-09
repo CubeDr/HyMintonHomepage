@@ -12,7 +12,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios.create({
-  baseURL: 'http://115.140.236.238:14707/'
+  baseURL: 'http://115.140.236.238:14707/db/'
 });
 Vue.use(Vuetify);
 Vue.use(Vuex);
@@ -29,13 +29,13 @@ const store = new Vuex.Store({
       id: '',
       fname: '',
       lname: '',
-      authLevel: -1
+      auth: -1
     }
   },
   mutations: {
     login(state, info) {
       state.user = {
-        id: info.id, fname: info.fname, lname: info.lname, authLevel: info.authLevel
+        id: info.id, fname: info.fname, lname: info.lname, auth: info.auth
       }
     }
   } ,

@@ -27,7 +27,7 @@
     },
     computed: {
         userAuth() {
-          return this.$store.state.user.authLevel;
+          return this.$store.state.user.auth;
         },
       userId() {
         return this.$store.state.user.id;
@@ -35,7 +35,7 @@
     },
     methods: {
       addFee() {
-        this.$http.post('db/fee/new', {
+        this.$http.post('fee/new', {
           date: this.y.toString() + this.m.toString().paddingLeft('00'),
           price: parseInt(this.price)
         }).then((res) => {

@@ -43,13 +43,13 @@
           }
       },
       created() {
-          this.$http.get('db/notice/list').then((result) => {
+          this.$http.get('notice/list').then((result) => {
             this.notices = result.data;
           })
       },
       computed: {
         userId() {
-          return this.$store.state.user.authLevel;
+          return this.$store.state.user.auth;
         }
       }
     }
