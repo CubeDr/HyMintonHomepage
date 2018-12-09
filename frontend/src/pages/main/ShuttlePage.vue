@@ -21,16 +21,13 @@
 
         <v-card-text >
           <v-container grid-list-md>
-            <v-layout wrap>
-
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.ta" label="신청개수(타)"></v-text-field>
+            <v-layout row wrap>
+              <v-flex xs3>
+                <v-text-field v-model="newOrder.amount" type="number" label="신청개수(타)"></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.etc" label="신청내용"></v-text-field>
+              <v-flex xs9>
+                <v-text-field v-model="newOrder.content" label="신청내용"></v-text-field>
               </v-flex>
-
-
             </v-layout>
             잔여개수(타): {{stock}}
           </v-container>
@@ -124,8 +121,10 @@
         { text: '수정', value: 'edit', sortable: false }
       ],
       lists: [],
-      editedItem: {},
-      defaultItem: {}
+      newOrder: {
+        amount: 0,
+        content: ''
+      }
     }),
 
     computed: {
