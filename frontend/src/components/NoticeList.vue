@@ -96,7 +96,7 @@
             eventBus.$emit("writeClick");
           },
         timeFormat(time) {
-          return Time.fromFormatString(time).datePart;
+          return Time.fromFormatString(time).koreanDatePart;
         }
       },
       created() {
