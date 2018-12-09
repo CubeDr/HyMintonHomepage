@@ -16,71 +16,47 @@
     <v-dialog v-model="newDialog" max-width="500px" >
 <v-layout justify-center>
     <v-flex >
-      <v-card ref="form">
-        <v-card-text>
-          <v-text-field
-            ref="sid"
-            v-model="newItem.sid"
-            :rules="[() => !!newItem.sid || 'This field is required']"
-            :error-messages="errorMessages"
-            label="Student ID"
-            placeholder="201400000000"
-            required
-          ></v-text-field>
-          <v-text-field
-            ref="LastName"
-            :rules="[
+      <v-form v-model="newValid" ref="form">
+        <v-card>
+          <v-card-text>
+            <v-text-field
+              v-model="newItem.sid"
+              :rules="[() => !!newItem.sid || 'This field is required']"
+              :error-messages="errorMessages"
+              label="학번"
+              required
+            ></v-text-field>
+            <v-text-field
+              :rules="[
               () => !!newItem.lname || 'This field is required',
-              
             ]"
-            v-model="newItem.lname"
-            label="Last Name"
-            placeholder="Hong"
-            required
-          ></v-text-field>
-         <v-text-field
-            ref="FirstName"
-            :rules="[
+              v-model="newItem.lname"
+              label="성"
+              required
+            ></v-text-field>
+            <v-text-field
+              :rules="[
               () => !!newItem.fname || 'This field is required',
-              
             ]"
-            v-model="newItem.fname"
-            label="First Name"
-            placeholder="Gildong"
-            required
-          ></v-text-field>
-          <v-autocomplete
-            ref="did"
-            :items="departments"
-            v-model="newItem.did"
-            label="Country"
-            placeholder="Select..."
-            required
-          ></v-autocomplete>
-        </v-card-text>
-        <v-divider class="mt-5"></v-divider>
-        <v-card-actions>
-          <v-btn flat @click="close">Cancel</v-btn>
-          <v-spacer></v-spacer>
-          <v-slide-x-reverse-transition>
-            <v-tooltip
-              v-if="formHasErrors"
-              left
-            >
-              <v-btn
-                slot="activator"
-                icon
-                class="my-0"
-                @click="resetForm"
-              >
-                <v-icon>refresh</v-icon>
-              </v-btn>
-              <span>Refresh form</span>
-            </v-tooltip>
-          </v-slide-x-reverse-transition>
-          <v-btn color="primary" flat @click="submit">Submit</v-btn>
-        </v-card-actions>
-      </v-card>
+              v-model="newItem.fname"
+              label="이름"
+              required
+            ></v-text-field>
+            <v-autocomplete
+              :items="departments"
+              :rules="[newDepartmentRule]"
+              v-model="newItem.did"
+              label="학부"
+              required
+            ></v-autocomplete>
+          </v-card-text>
+          <v-divider class="mt-5"></v-divider>
+          <v-card-actions>
+            <v-btn flat @click="close">Cancel</v-btn>
+            <v-btn :disabled="!newValid" color="primary" flat @click="submit">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-flex>
   </v-layout>
     </v-dialog>
@@ -167,6 +143,8 @@
     NewPassword:'',
     formHasErrors: false,
 
+    newValid: false,
+
     newDialog: false,
     pwDialog: false,
     authDialog: false,
@@ -242,6 +220,11 @@
       this.formHasErrors = false
       this.newItem = this.lists.push(this.newItem)
       this.close()
+    },
+    newDepartmentRule() {
+      if(this.newItem.did === '') return '학부를 입력해주세요';
+      else if(!this.departments.includes(this.newItem.did)) return '학부를 정확히 입력해주세요';
+      return true;
     }
   }
 }
