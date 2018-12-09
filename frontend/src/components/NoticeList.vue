@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="control">
-      <button @click="writeClick()">공지 작성</button>
+      <v-btn v-if="userId >= 4" @click="writeClick()">공지 작성</v-btn>
     </div>
     <table>
       <thead>
@@ -16,10 +16,10 @@
       <tbody>
       <tr v-for="notice in notices">
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
-        <td><nobr>{{ notice.title }}</nobr></td>
-        <td class="center"><nobr>{{ notice.userId }}</nobr></td>
-        <td class="center"><nobr>{{ notice.body }}</nobr></td>
-        <td class="center"><nobr>{{ notice.userId }}</nobr></td>
+        <td><nobr>{{ notice.name }}</nobr></td>
+        <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
+        <td class="center"><nobr>{{ notice.date }}</nobr></td>
+        <td class="center"><nobr>{{ notice.hits }}</nobr></td>
       </tr>
       </tbody>
     </table>
@@ -28,9 +28,9 @@
 
 <script>
 
-    import {eventBus} from "../main";
+  import {eventBus} from "../main";
 
-    export default {
+  export default {
         name: "NoticeList",
       data() {
         return {
@@ -43,10 +43,14 @@
           }
       },
       created() {
-          this.$http.get('https://jsonplaceholder.typicode.com/posts').then(function (data) {
-            console.log(data);
-            this.notices = data.body.slice(0, 10);
+          this.$http.get('http://115.140.236.238:14707/db/notice/list').then((result) => {
+            this.notices = result.data;
           })
+      },
+      computed: {
+        userId() {
+          return this.$store.state.user.authLevel;
+        }
       }
     }
 </script>

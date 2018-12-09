@@ -2,51 +2,60 @@
     <div id="HyNav">
       <div id="navHolder">
         <HyNavButton class="navButton"
-                     :source="btn1Source"
                      title="공지사항"
-                     page="notice"
+                     page="Notice"
                      :current="page"
                      :selectColor="selectColor"
-                     @navBtnClick="noticeClick($event)"/>
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-lightbulb fa-lg"></i>
+        </HyNavButton>
         <HyNavButton class="navButton"
-                     :source="btn1Source"
                      title="행사"
-                     page="event"
+                     page="Event"
                      :current="page"
                      :selectColor="selectColor"
-                     @navBtnClick="noticeClick($event)"/>
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-calendar-alt fa-lg"></i>
+        </HyNavButton>
         <HyNavButton class="navButton"
-                     :source="btn1Source"
                      title="회비"
-                     page="fee"
+                     page="Fee"
                      :current="page"
                      :selectColor="selectColor"
-                     @navBtnClick="noticeClick($event)"/>
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-won-sign fa-lg"></i>
+        </HyNavButton>
         <HyNavButton class="navButton"
-                     :source="btn1Source"
                      title="셔틀콕"
-                     page="shuttle"
+                     page="Shuttle"
                      :current="page"
                      :selectColor="selectColor"
-                     @navBtnClick="noticeClick($event)"/>
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-shopping-cart fa-lg"></i>
+        </HyNavButton>
+         <HyNavButton class="navButton"
+                     title="회원관리"
+                     page="Admin"
+                     :current="page"
+                     :selectColor="selectColor"
+                     @navBtnClick="noticeClick($event)">
+          <i class="fas fa-users fa-lg"></i>
+        </HyNavButton>
       </div>
     </div>
 </template>
 
 <script>
     import HyNavButton from "./HyNavButton";
+    import router from '../router'
     export default {
         name: "HyTab",
         props: ['page', 'selectColor'],
         components: {HyNavButton},
-        data() {
-          return {
-            btn1Source: require("../assets/logo_white.png"),
-          }
-        },
         methods: {
           noticeClick(what) {
-            this.$emit('click', what)
+            this.$emit('click', what);
+            router.push({name: what+'Page'});
           }
         }
     }
@@ -66,6 +75,6 @@
 }
 
 .navButton {
-  margin: 5px 20px 0px 20px;
+  margin: 5px 0 0 20px;
 }
 </style>
