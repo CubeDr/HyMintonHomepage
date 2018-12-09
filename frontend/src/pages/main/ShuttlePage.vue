@@ -80,7 +80,7 @@
             edit
           </v-icon>
           <v-icon
-            v-if="!props.item.paid && !props.item.given && (userAuth >= 4 || userId === item.id)"
+            v-if="!props.item.paid && !props.item.given && (userAuth >= 4 || userId === props.item.id)"
             small
             @click="deleteItem(props.item)"
           >
@@ -143,7 +143,7 @@
     },
 
     created () {
-      this.load()
+      this.load();
     },
 
     methods: {
