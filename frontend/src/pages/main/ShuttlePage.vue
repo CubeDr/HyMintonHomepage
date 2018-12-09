@@ -68,7 +68,7 @@
     >
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">{{ props.item.date.koreanDatePart }}</td>
-        <td class="text-xs-left">{{ props.item.name }} ({{props.item.uid }})</td>
+        <td class="text-xs-left">{{ props.item.name.name }} ({{props.item.uid }})</td>
         <td class="text-xs-left">{{ props.item.amount }}</td>
         <td class="text-xs-left">{{ getPaid(props.item.paid) }}</td>
         <td class="text-xs-left">{{ getProvided(props.item.given) }}</td>
@@ -100,6 +100,7 @@
 
 <script>
   import Time from "../../classes/Time";
+  import Name from "../../classes/Name";
 
   export default {
     name: 'ShuttlePage',
@@ -153,7 +154,7 @@
             return {
               date: Time.fromFormatString(data.date),
               uid: '?',
-              name: data.fname + data.lname,
+              name: new Name(data.fname, data.lname),
               amount: data.amount,
               paid: data.paid===1,
               given: data.given===1,
