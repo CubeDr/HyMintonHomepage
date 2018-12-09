@@ -67,11 +67,11 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.date.koreanDatePart }}</td>
-        <td class="text-xs-right">{{ props.item.name }} ({{props.item.uid }})</td>
-        <td class="text-xs-right">{{ props.item.amount }}</td>
-        <td class="text-xs-right">{{ getPaid(props.item.paid) }}</td>
-        <td class="text-xs-right">{{ getProvided(props.item.given) }}</td>
+        <td class="text-xs-left">{{ props.item.date.koreanDatePart }}</td>
+        <td class="text-xs-left">{{ props.item.name }} ({{props.item.uid }})</td>
+        <td class="text-xs-left">{{ props.item.amount }}</td>
+        <td class="text-xs-left">{{ getPaid(props.item.paid) }}</td>
+        <td class="text-xs-left">{{ getProvided(props.item.given) }}</td>
         <td class="text-xs-left">{{ props.item.content }}</td>
         <td class="justify-center layout px-0">
           <v-icon
