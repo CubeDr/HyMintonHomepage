@@ -148,26 +148,19 @@
 
     methods: {
       load () {
-        this.lists = [
-          {
-            date: Time.fromFormatString('2018-12-05 00:00'),
-            uid: 'Administrator',
-            name: '관리자',
-            amount: 10,
-            content: '회장이 좀 쓰겠다는데...',
-            paid: true,
-            given: true,
-          },
-          {
-            date: Time.fromFormatString('2018-12-05 00:00'),
-            uid: 'Administrator',
-            name: '관리자',
-            amount: 10,
-            content: '회장이 좀 쓰겠다는데...',
-            paid: true,
-            given: true,
-          }
-        ]
+        this.$http.get('order/list').then((res) => {
+          this.lists = res.data.map((data) => {
+            return {
+              date: Time.fromFormatString(data.date),
+              uid: '?',
+              name: data.fname + data.lname,
+              amount: data.amount,
+              paid: data.paid===1,
+              given: data.given===1,
+              content: data.content
+            };
+          });
+        });
       },
       getPaid(b){
         if(b) return '지불완료'
