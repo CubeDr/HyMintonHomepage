@@ -49,7 +49,7 @@
             id: '',
             pw: '',
             idRules: [(id) => id.length > 8 || '8자 이상 입력해야 합니다.'],
-            pwRules: [(pw) => pw.length > 8 || '8자 이상 입력해야 합니다.']
+            pwRules: []
           }
         },
         methods: {
