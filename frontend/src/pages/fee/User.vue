@@ -41,7 +41,7 @@
       methods: {
         loadPaymentInfo() {
           // load from url
-          this.$http.get('db/payment/' + this.$route.params.id).then((res) => {
+          this.$http.get('payment/' + this.$route.params.id).then((res) => {
             console.log(res);
             this.payments = res.data.map((data) => {
               return {

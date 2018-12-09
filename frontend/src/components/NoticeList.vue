@@ -43,7 +43,7 @@
           }
       },
       created() {
-          this.$http.get('db/notice/list').then((result) => {
+          this.$http.get('notice/list').then((result) => {
             this.notices = result.data;
           })
       },
