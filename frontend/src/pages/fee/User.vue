@@ -41,13 +41,13 @@
       methods: {
         loadPaymentInfo() {
           // load from url
-          this.$http.get('db/payment/' + this.$route.params.id).then((res) => {
+          this.$http.get('payment/' + this.$route.params.id).then((res) => {
             console.log(res);
             this.payments = res.data.map((data) => {
               return {
                 name: data.fid.slice(0,4) + "년 " + data.fid.slice(4,6) + "월 회비",
                 price: data.price,
-                date: data.date==null?'미납':Time.fromFormatString(data.date)
+                date: data.date==null?'미납':Time.fromFormatString(data.date).koreanDatePart
               }
             });
           });

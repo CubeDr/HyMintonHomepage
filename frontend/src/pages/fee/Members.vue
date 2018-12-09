@@ -11,7 +11,7 @@
             <td>{{ props.item.name }}</td>
             <td class="text-xs-center">{{ props.item.paid }}</td>
             <td class="text-xs-center">{{ props.item.npaid }}</td>
-            <td class="text-xs-center">{{ props.item.lastPaid }}</td>
+            <td class="text-xs-center">{{ props.item.lastPaid==null?'':props.item.lastPaid.koreanDatePart }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -20,13 +20,15 @@
 </template>
 
 <script>
+    import Time from "../../classes/Time";
+
     export default {
       name: "Members",
       data () {
         return {
           headers: [
             {
-              text: '회원명',
+              text: '학번',
               align: 'left',
               value: 'name'
             },
@@ -40,18 +42,20 @@
       methods: {
         loadUserPaymentInfo() {
           // ... load from url
+          this.$http.get('payment/all').then((res) => {
+            this.payments = res.data.map((data) => {
+                return {
+                  name: data.id,
+                  id: data.id,
+                  paid: data.paid,
+                  npaid: data.npaid,
+                  lastPaid: data.lastpaid==null?'':Time.fromFormatString(data.lastpaid)
+                }
+              }
+            );
 
-          this.payments = [
-            {
-              value: true,
-              name: '김현이',
-              id: '2014003990',
-              paid: 100,
-              npaid: 0,
-              lastPaid: '2018-12-08'
-            }
-          ]
-        }
+          });
+        },
       },
       created() {
         this.loadUserPaymentInfo();
