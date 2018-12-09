@@ -524,9 +524,9 @@ router.post('/order/mod', function(req, res, next){
   var paid = req.body.paid;
   var given = req.body.given;
 
-  connection.query("UPDATE hymt_db.Order \
-                    SET paid = ?, given = ? \
-                    WHERE UID = ? AND OrderID = ?;",[paid, given, id, oid], 
+  connection.query("UPDATE hymt_db.Order, User \
+                    SET paid = ?, given = ?\
+                    WHERE UserID = ? AND authority >= 4 AND OrderID = ?;",[paid, given, id, oid], 
   function(err, rows, fields){
     if(err){
       console.log("주문 정보 갱신 실패!");
