@@ -161,6 +161,9 @@
             };
           });
         });
+        this.$http.get('order/left').then((res) => {
+          this.stock = res.data[0].sum;
+        });
       },
       getPaid(b){
         if(b) return '지불완료'
