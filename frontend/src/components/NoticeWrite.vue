@@ -1,13 +1,27 @@
 <template>
     <div>
-      <form>
-        <v-text-field id="ipTitle" type="text" placeholder="제목" v-model="title"/>
-        <v-textarea id="taContent" title="내용" v-model="content" placeholder="공지 내용" :counter="500"></v-textarea>
+      <v-form ref="form" v-model="valid">
+        <v-text-field
+          id="ipTitle"
+          type="text"
+          placeholder="제목"
+          :rules="[(t)=> t.length>0 || '제목을 작성해야 합니다.'
+                  ,(t)=> t.length<=30 || '제목은 30자 이하이어야 합니다']"
+          :counter="30"
+          v-model="title"></v-text-field>
+        <v-textarea
+          id="taContent"
+          title="내용"
+          v-model="content"
+          placeholder="공지 내용"
+          :rules="[(t)=> t.length>0 || '내용을 작성해야 합니다.'
+                  ,(t)=> t.length<=50 || '내용은 50자 이하이어야 합니다']"
+          :counter="50"></v-textarea>
         <div id="btns">
           <v-btn @click.prevent="cancel()">취소</v-btn>
-          <v-btn @click.prevent="submit()">작성</v-btn>
+          <v-btn :disabled="!valid" @click.prevent="submit()">작성</v-btn>
         </div>
-      </form>
+      </v-form>
     </div>
 </template>
 
@@ -19,7 +33,8 @@
       data() {
         return {
           title: "",
-          content: ""
+          content: "",
+          valid: false
         }
       },
       methods: {
