@@ -46,7 +46,7 @@
         submit() {
           console.log('전송');
           this.$http.post('notice/new', {
-            id: '2014001001',
+            id: this.$store.state.user.id,
             content: this.content,
             title: this.title
           }).then(res => {
