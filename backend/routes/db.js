@@ -152,7 +152,7 @@ router.post('/user/mod/pw', function(req, res, next){
 })
 
 // User - 수정 - 권한
-router.post('/user/mod/pw', function(req, res, next){
+router.post('/user/mod/auth', function(req, res, next){
   var id = req.body.id;
   var auth = req.body.auth;
 
@@ -164,6 +164,19 @@ router.post('/user/mod/pw', function(req, res, next){
       res.send(400);
     }
     res.send(200);    
+  })
+})
+
+// User - 모든 회원
+router.get('/user/all', function(req, res, next){
+  connection.query("SELECT UserID, lname, fname, DID, authority as auth \
+                    FROM User; ",
+  function(err, rows, fields){
+    if(err){
+      res.send(err);
+      throw err;
+    }
+    res.send(rows);    
   })
 })
 
@@ -253,14 +266,18 @@ router.post('/notice/del', function(req, res, next){
 })
 
 
-// 회비 - 회원별 납부현황
+// 회비 - 전체회원 납부현황
 router.get('/payment/all', function(req, res, next){
-  connection.query("SELECT u.UserID as uid, f.FeeID as fid, p.pdate as date\
-                    FROM User u, Fee f, Payment p \
-                    WHERE u.UserID= p.UID and f.FeeID=p.FID\
-                    ORDER BY u.UserID DESC, f.FeeID ASC;", function(err, rows, fields){
+  connection.query("SELECT DISTINCT \
+                            UserID as id,\
+                            (SELECT COUNT(*) FROM Payment, User WHERE UserID= UID AND UID =id AND paid=1) as paid,\
+                            (SELECT COUNT(*) FROM Payment, User WHERE UserID= UID AND UID =id AND paid=0) as npaid,\
+                            (SELECT pdate FROM Payment, User WHERE UserID = UID AND UID =id AND paid=1 ORDER BY pdate DESC LIMIT 1) as lastpaid\
+                    FROM User, Payment\
+                    WHERE UserID = UID;", 
+  function(err, rows, fields){
     if(err){
-      console.log("회원별 납부 현황 조회 실패!");
+      console.log("전체 회원 납부 현황 조회 실패!");
       res.send(400);
       throw err;
     }
@@ -439,7 +456,7 @@ router.post('/event/new', function(req, res, next){
 
 //셔틀콕 목록
 router.get('/order/list', function(req, res, next){
-  connection.query("SELECT o.odate as date, u.lname as lname, u.fname as fname, \
+  connection.query("SELECT o.OrderID as oid, u.UserID as id, o.odate as date, u.lname as lname, u.fname as fname, \
                            amount, o.ocontent as content, paid, given\
                     FROM hymt_db.Order o, User u\
                     WHERE o.UID = u.UserID;", 
@@ -470,7 +487,38 @@ router.post('/order/new', function(req, res, next){
   })
 })
 
+//셔틀콕 재고
+router.get('/order/left', function(req, res, next){
+  connection.query("SELECT -1 * sum(amount) as sum \
+                    FROM hymt_db.Order", 
+  function(err, rows, fields){
+    if(err){
+      console.log("셔틀콕 재고 계산 실패!");
+      res.send(400);
+      throw err;
+    }
+    res.send(rows);
+  })
+})
 
+//셔틀콕 정보 수정
+router.post('/order/mod', function(req, res, next){
+  var id = req.body.id;
+  var oid = req.body.oid;
+  var paid = req.body.paid;
+  var given = req.body.given;
 
+  connection.query("UPDATE hymt_db.Order \
+                    SET paid = ?, given = ? \
+                    WHERE UID = ? AND OrderID = ?;",[paid, given, id, oid], 
+  function(err, rows, fields){
+    if(err){
+      console.log("주문 정보 갱신 실패!");
+      res.send(400);
+      throw err;
+    }
+    res.send(200);
+  })
+})
 
 module.exports = router;
