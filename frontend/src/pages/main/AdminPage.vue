@@ -11,7 +11,7 @@
 
       <v-spacer></v-spacer>
       <v-btn color="primary" dark class="mb-2" @click="pwDialog=true">비밀번호 변경</v-btn>
-      <v-btn color="primary" dark class="mb-2" @click="newDialog=true">신규 회원 등록</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="openNewDialog()">신규 회원 등록</v-btn>
     </v-toolbar>
     <v-dialog v-model="newDialog" max-width="500px" >
 <v-layout justify-center>
@@ -20,8 +20,8 @@
         <v-card>
           <v-card-text>
             <v-text-field
-              v-model="newItem.sid"
-              :rules="[() => !!newItem.sid || 'This field is required']"
+              v-model="newItem.id"
+              :rules="[() => !!newItem.id || 'This field is required']"
               :error-messages="errorMessages"
               label="학번"
               required
@@ -45,7 +45,7 @@
             <v-autocomplete
               :items="departments"
               :rules="[newDepartmentRule]"
-              v-model="newItem.did"
+              v-model="newItem.dep"
               label="학부"
               required
             ></v-autocomplete>
@@ -120,10 +120,10 @@
     >
       <template slot="items" slot-scope="props">
         <tr @click="authDialog=true">
-        <td>{{ props.item.sid}}</td>
+        <td>{{ props.item.id}}</td>
         <td class="text-xs-left">{{ props.item.lname }}</td>
         <td class="text-xs-left">{{ props.item.fname }}</td>
-        <td class="text-xs-left">{{ props.item.did }}</td>
+        <td class="text-xs-left">{{ props.item.dep }}</td>
         <td class="text-xs-left">{{ props.item.auth }}</td>
         </tr>
       </template>
@@ -138,7 +138,7 @@
   export default {
   name:'AdminPage',
   data: () => ({
-    departments: ['컴퓨터소프트웨어학부','융합전자공학부','에너지공학부'],
+    departments: ['컴퓨터소프트웨어학부'],
     errorMessages: '',
     NewPassword:'',
     formHasErrors: false,
@@ -154,21 +154,21 @@
         text: '학번',
         align: 'left',
         sortable: true,
-        value: 'sid'
+        value: 'id'
       },
       { text: '성', value: 'lname' },
       { text: '이름', value: 'fname' },
-      { text: '학부', value: 'did' },
+      { text: '학부', value: 'dep' },
       { text: '권한', value: 'auth' },
 
 
     ],
     lists: [],
     newItem: {
-      sid: '',
+      id: '',
       lname: '',
       fname: '',
-      did: '',
+      dep: '',
       auth: 0,
     },
     newAuth: ''
@@ -188,19 +188,19 @@
     initialize () {
       this.lists = [
         {
-            sid: '2014003963',
+            id: '2014003963',
            value: false,
            lname: 'Kim',
            fname: 'Jaeguk',
-            did: 'asdfasdf',
+            dep: 'asdfasdf',
             auth: 0
         },
         {
-           sid: '2014002363',
+           id: '2014002363',
            value: false,
            lname: 'Kim',
            fname: 'Hyuni',
-            did: 'asdddf',
+            dep: 'asdddf',
             auth: 0
         }
       ]
@@ -216,14 +216,33 @@
     changeAuthor() {
       this.close()
     },
+    openNewDialog() {
+      this.newItem = {
+        sid: '',
+          lname: '',
+          fname: '',
+          did: '',
+          auth: 0,
+      };
+      this.newDialog = true;
+    },
     submit (){
-      this.formHasErrors = false
-      this.newItem = this.lists.push(this.newItem)
+      let randomPw = (10000000 + parseInt(Math.random()*90000000)).toString();
+      this.$http.post('user/new', {
+        id: this.newItem.id,
+        pw: randomPw,
+        lname: this.newItem.lname,
+        fname: this.newItem.fname,
+        auth: this.newItem.auth,
+        dname: this.newItem.dep
+      }).then((res) => {
+        console.log(res);
+      });
       this.close()
     },
     newDepartmentRule() {
-      if(this.newItem.did === '') return '학부를 입력해주세요';
-      else if(!this.departments.includes(this.newItem.did)) return '학부를 정확히 입력해주세요';
+      if(this.newItem.dep === '') return '학부를 입력해주세요';
+      else if(!this.departments.includes(this.newItem.dep)) return '학부를 정확히 입력해주세요';
       return true;
     }
   }
