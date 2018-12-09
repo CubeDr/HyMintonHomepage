@@ -167,7 +167,6 @@
         });
         this.$http.get('order/left').then((res) => {
           this.stock = res.data[0].sum;
-          if (stock<0){this.stockMinus = true;}
         });
       },
       getPaid(b){
