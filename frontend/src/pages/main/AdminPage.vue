@@ -120,7 +120,6 @@
       </v-dialog>
 
     <v-dialog v-model="newPwDialog" max-width="600px" >
-
       <v-card>
         <v-card-title>
           <span class="headline">회원가입 성공</span>
@@ -132,6 +131,22 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="closeNewPwDialog()">확인</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="errorDialog" max-width="600px" >
+      <v-card>
+        <v-card-title>
+          <span class="headline">에러 발생!!</span>
+        </v-card-title>
+
+        <v-card-actions>
+          <v-flex xs12 sm6 class="py-2">
+            <v-label>{{ errorMessage }}</v-label>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="errorMessage = ''">확인</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -179,6 +194,8 @@
     newPwDialog: false, // 회원가입 후 비밀번호 표시
     newPw: '',
 
+    errorMessage: '',
+
     search: '',
     headers: [
       {
@@ -211,6 +228,10 @@
 
   created () {
     this.initialize()
+  },
+
+  computed: {
+    errorDialog() { return this.errorMessage !== ''; }
   },
 
   methods: {
@@ -264,6 +285,12 @@
         this.close();
         this.newPw = randomPw;
         this.openNewPwDialog();
+      }).catch((err) => {
+        console.log(err);
+        if(err.response.status == 401) {
+          this.close();
+          this.errorMessage = "중복된 학번입니다!";
+        }
       });
     },
     openAuthDialog(id, oAuth) {
