@@ -129,7 +129,7 @@
 
     computed: {
       userAuth() {
-        return this.$store.state.user.authLevel;
+        return this.$store.state.user.auth;
       },
       userId() {
         return this.$store.state.user.id;
