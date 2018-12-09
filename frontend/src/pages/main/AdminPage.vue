@@ -87,27 +87,27 @@
 
         <v-card-actions>
            <v-flex xs12 sm6 class="py-2">
-            <v-btn-toggle v-model="newAuth">
-              <v-btn flat value="left">
+            <v-btn-toggle v-model="newItem.auth">
+              <v-btn flat value="5">
                 회장
               </v-btn>
-              <v-btn flat value="center">
+              <v-btn flat value="4">
                 부회장
               </v-btn>
-              <v-btn flat value="right">
+              <v-btn flat value="3">
                 운영진
               </v-btn>
-              <v-btn flat value="justify">
+              <v-btn flat value="2">
                 활동
               </v-btn>
-              <v-btn flat value="justify">
+              <v-btn flat value="1">
                 비활동
               </v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="close">취소</v-btn>
-          <v-btn color="blue darken-1" flat @click="changeAuthor">변경</v-btn>
+          <v-btn color="blue darken-1" flat @click="closeAuthDialog">취소</v-btn>
+          <v-btn color="blue darken-1" flat @click="newAuth">변경</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -137,7 +137,7 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <tr @click="authDialog=true">
+        <tr @click="openAuthDialog( props.item.id )">
         <td>{{ props.item.id}}</td>
         <td class="text-xs-left">{{ props.item.lname }}</td>
         <td class="text-xs-left">{{ props.item.fname }}</td>
@@ -165,7 +165,9 @@
 
     newDialog: false,
     pwDialog: false,
+
     authDialog: false,
+    targetId: 0,
 
     newPwDialog: false,
     newPw: '',
@@ -182,8 +184,6 @@
       { text: '이름', value: 'fname' },
       { text: '학부', value: 'dep' },
       { text: '권한', value: 'auth' },
-
-
     ],
     lists: [],
     newItem: {
@@ -191,9 +191,8 @@
       lname: '',
       fname: '',
       dep: '',
-      auth: 0,
-    },
-    newAuth: ''
+      auth: 0
+    }
   }),
 
   watch: {
@@ -235,9 +234,6 @@
     changePassword() {
       this.close()
     },
-    changeAuthor() {
-      this.close()
-    },
     openNewDialog() {
       this.newItem = {
         sid: '',
@@ -269,6 +265,20 @@
         this.newPw = randomPw;
         this.openNewPwDialog();
       });
+    },
+    openAuthDialog(id) {
+      this.targetId = id;
+      this.authDialog = true;
+    },
+    closeAuthDialog() {
+      this.targetId=  0;
+      this.authDialog = false;
+    },
+    newAuth() {
+      let id = this.targetId;
+      let auth = this.newItem.auth;
+      console.log(id + ", " + auth);
+      this.closeAuthDialog();
     },
     newDepartmentRule() {
       if(this.newItem.dep === '') return '학부를 입력해주세요';
