@@ -361,6 +361,23 @@ router.post('/fee/new', function(req, res, next){
 })
 
 
+// 회비 - 전체
+router.get('/fee/upaylist', function(req, res, next) {
+  connection.query("SELECT u.uid AS id, u.fname AS fname, u.lname AS lname, " +
+      "SUM(CASE WHEN p.pdate = NULL THEN 1 ELSE 0 END) paid, " +
+      "SUM(CASE WHEN p.pdate != NULL THEN 1 ELSE 0 END) npaid, " +
+      "(SELECT MAX(p.pdate) " +
+        "FROM user u JOIN payment p ON (u.id = p.uid)" +
+        "WHERE p.date != NULL) AS lastpaid " +
+      "FROM user u JOIN payment p ON (u.uid = p.uid);", function(err, rows, fields) {
+    if(err) {
+        console.log("본인 회비 납부 조회 실패!");
+        res.send(400);
+        throw err;
+    }
+    res.send(rows);
+  });
+});
 
 
 // 행사 - month 전달 시 행사 날짜 전달
