@@ -14,9 +14,9 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="notice in notices">
+      <tr v-for="notice in notices" @click="openNoticeDialog( notice )">
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
-        <td><nobr @click ="openNoticeDialog( notice )">{{ notice.title }}</nobr></td>
+        <td><nobr>{{ notice.title }}</nobr></td>
         <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
         <td class="center"><nobr>{{ notice.date }}</nobr></td>
         <td class="center"><nobr>{{ notice.hits }}</nobr></td>
@@ -27,14 +27,12 @@
       v-model="dialog"
       width="500"
     >
-
-
       <v-card>
         <v-card-title
           class="headline grey lighten-2"
 
         >
-          공지제목 <v-spacer></v-spacer>{{noticeWriter}}
+          {{ noticeTitle }} <v-spacer></v-spacer>{{noticeWriter}}
         </v-card-title>
 
         <v-card-text>
@@ -71,7 +69,7 @@
         return {
           dialog: false,
           notices: [],
-          noticeName:'',
+          noticeTitle:'',
           noticeWriter:'',
           noticeDate:'',
           noticeContent:''
@@ -83,7 +81,7 @@
           this.$http.get('notice/' + notice.id).then((res) => {
             let n = res.data[0];
 
-            this.noticeName = n.title;
+            this.noticeTitle = n.title;
             this.noticeWriter = n.lname+n.fname;
             this.noticeDate = n.date;
             //?
