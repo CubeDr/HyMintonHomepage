@@ -122,7 +122,7 @@
       ],
       lists: [],
       newOrder: {
-        amount: 0,
+        amount: 1,
         content: ''
       }
     }),
@@ -173,7 +173,6 @@
 
       editItem (item) {
         this.editedIndex = this.lists.indexOf(item)
-        this.editedItem = Object.assign({}, item)
         this.dialog2 = true
       },
 
@@ -183,21 +182,19 @@
       },
 
       close () {
-        this.dialog1 = false
-        this.dialog2 = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-
-        }, 300)
+        this.dialog1 = false;
+        this.dialog2 = false;
       },
 
       order () {
-
-        this.stock = this.stock - this.editedItem.ta
-        this.editedItem =
-          this.lists.push(this.editedItem)
-
-        this.close()
+        this.$http.post('order/new', {
+          amount: this.newOrder.amount,
+          id: this.$store.state.user.id,
+          content: this.newOrder.content
+        }).then((res) => {
+          console.log(res);
+          this.close();
+        });
       },
       editPaid (){
         this.lists[this.editedIndex].paid = !this.lists[this.editedIndex].paid
