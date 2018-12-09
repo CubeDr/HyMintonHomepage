@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "A Vue.js project",
-  "author": "HyunI Kim <spaceship00@hanyang.ac.kr>",
+  "auth": "HyunI Kim <spaceship00@hanyang.ac.kr>",
   "scripts": {
     "build": "node build/build.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

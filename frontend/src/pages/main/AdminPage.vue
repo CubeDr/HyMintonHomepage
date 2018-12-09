@@ -10,18 +10,18 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog2=true">비밀번호 변경</v-btn>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">신규 회원 등록</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="pwDialog=true">비밀번호 변경</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="newDialog=true">신규 회원 등록</v-btn>
     </v-toolbar>
-    <v-dialog v-model="dialog1" max-width="500px" >
+    <v-dialog v-model="newDialog" max-width="500px" >
 <v-layout justify-center>
     <v-flex >
       <v-card ref="form">
         <v-card-text>
           <v-text-field
             ref="sid"
-            v-model="NewItem.sid"
-            :rules="[() => !!NewItem.sid || 'This field is required']"
+            v-model="newItem.sid"
+            :rules="[() => !!newItem.sid || 'This field is required']"
             :error-messages="errorMessages"
             label="Student ID"
             placeholder="201400000000"
@@ -30,10 +30,10 @@
           <v-text-field
             ref="LastName"
             :rules="[
-              () => !!NewItem.lname || 'This field is required',
+              () => !!newItem.lname || 'This field is required',
               
             ]"
-            v-model="NewItem.lname"
+            v-model="newItem.lname"
             label="Last Name"
             placeholder="Hong"
             required
@@ -41,10 +41,10 @@
          <v-text-field
             ref="FirstName"
             :rules="[
-              () => !!NewItem.fname || 'This field is required',
+              () => !!newItem.fname || 'This field is required',
               
             ]"
-            v-model="NewItem.fname"
+            v-model="newItem.fname"
             label="First Name"
             placeholder="Gildong"
             required
@@ -52,7 +52,7 @@
           <v-autocomplete
             ref="did"
             :items="departments"
-            v-model="NewItem.did"
+            v-model="newItem.did"
             label="Country"
             placeholder="Select..."
             required
@@ -85,7 +85,7 @@
   </v-layout>
     </v-dialog>
    
- <v-dialog v-model="dialog2" max-width="500px" >
+ <v-dialog v-model="pwDialog" max-width="500px" >
 
       <v-card>
         <v-card-title>
@@ -102,7 +102,7 @@
       </v-card>
     </v-dialog>
 
- <v-dialog v-model="dialog3" max-width="600px" >
+ <v-dialog v-model="authDialog" max-width="600px" >
 
       <v-card>
         <v-card-title>
@@ -111,7 +111,7 @@
 
         <v-card-actions>
            <v-flex xs12 sm6 class="py-2">
-            <v-btn-toggle v-model="text">
+            <v-btn-toggle v-model="newAuth">
               <v-btn flat value="left">
                 회장
               </v-btn>
@@ -143,12 +143,12 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <tr @click="dialog3=true">
+        <tr @click="authDialog=true">
         <td>{{ props.item.sid}}</td>
         <td class="text-xs-left">{{ props.item.lname }}</td>
         <td class="text-xs-left">{{ props.item.fname }}</td>
         <td class="text-xs-left">{{ props.item.did }}</td>
-        <td class="text-xs-left">{{ props.item.author }}</td>
+        <td class="text-xs-left">{{ props.item.auth }}</td>
         </tr>
       </template>
       <template slot="no-data">
@@ -160,124 +160,89 @@
 
 <script>
   export default {
-    name:'AdminPage',
-    data: () => ({
-      departments: ['컴퓨터소프트웨어학부','융합전자공학부','에너지공학부'],
-      errorMessages: '',
-      NewPassword:'',
-      formHasErrors: false,
-      
-      dialog1: false,
-      dialog2: false,
-      dialog3: false,
-      search: '',
-      headers: [
+  name:'AdminPage',
+  data: () => ({
+    departments: ['컴퓨터소프트웨어학부','융합전자공학부','에너지공학부'],
+    errorMessages: '',
+    NewPassword:'',
+    formHasErrors: false,
+
+    newDialog: false,
+    pwDialog: false,
+    authDialog: false,
+    search: '',
+    headers: [
+      {
+        text: '학번',
+        align: 'left',
+        sortable: true,
+        value: 'sid'
+      },
+      { text: '성', value: 'lname' },
+      { text: '이름', value: 'fname' },
+      { text: '학부', value: 'did' },
+      { text: '권한', value: 'auth' },
+
+
+    ],
+    lists: [],
+    newItem: {
+      sid: '',
+      lname: '',
+      fname: '',
+      did: '',
+      auth: 0,
+    },
+    newAuth: ''
+  }),
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+
+  created () {
+    this.initialize()
+  },
+
+  methods: {
+    initialize () {
+      this.lists = [
         {
-          text: '학번',
-          align: 'left',
-          sortable: true,
-          value: 'sid'
+            sid: '2014003963',
+           value: false,
+           lname: 'Kim',
+           fname: 'Jaeguk',
+            did: 'asdfasdf',
+            auth: 0
         },
-        { text: '성', value: 'lname' },
-        { text: '이름', value: 'fname' },
-        { text: '학부', value: 'did' },
-        { text: '권한', value: 'author' },
-       
-        
-      ],
-      lists: [],
-      NewItem: {
-        sid: '',
-        value: false,
-        lname: '',
-        fname: '',
-        did: '',
-        author: 0,
-        password: ''
-      },
-      defaultItem: {
-         sid: '',
-        value: false,
-        lname: '',
-        fname: '',
-        did: '',
-        author: 0,
-        password: '',
-      }
-    }),
-
-    computed: {
-
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
-    },
-
-    created () {
-      this.initialize()
-    },
-
-    methods: {
-      initialize () {
-        this.lists = [
-          {
-              sid: '2014003963',
-             value: false,
-             lname: 'Kim',
-             fname: 'Jaeguk',
-              did: 'asdfasdf',
-              author: 0
-          },
-          {
-             sid: '2014002363',
-             value: false,
-             lname: 'Kim',
-             fname: 'Hyuni',
-              did: 'asdddf',
-              author: 0
-          }
-        ]
-      },
-      computed: {
-      form () {
-        return {
-          sid: this.NewItem.sid,
-          lname: this.NewItem.lname,
-          fname: this.NewItem.fname,
-          did: this.NewItem.did
+        {
+           sid: '2014002363',
+           value: false,
+           lname: 'Kim',
+           fname: 'Hyuni',
+            did: 'asdddf',
+            auth: 0
         }
-      }
+      ]
     },
-
-      close () {
-        this.dialog1 = false
-        this.dialog2 = false
-        this.dialog3 = false
-        setTimeout(() => {
-          this.NewItem = Object.assign({}, this.DefaultItem)
-
-        }, 300)
-      },
-     changePassword() {
-         this.close()
-     },
-     changeAuthor() {
-         this.close()
-     },
-      
-     
-      submit (){
-            this.formHasErrors = false
-
-       
-           this.NewItem =
-          this.lists.push(this.NewItem)
-
-        this.close()
-      }
+    close () {
+      this.newDialog = false
+      this.pwDialog = false
+      this.authDialog = false
+    },
+    changePassword() {
+      this.close()
+    },
+    changeAuthor() {
+      this.close()
+    },
+    submit (){
+      this.formHasErrors = false
+      this.newItem = this.lists.push(this.newItem)
+      this.close()
     }
   }
+}
 </script>

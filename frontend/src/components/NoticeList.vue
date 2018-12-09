@@ -49,7 +49,7 @@
       },
       computed: {
         userId() {
-          return this.$store.state.user.authLevel;
+          return this.$store.state.user.auth;
         }
       }
     }

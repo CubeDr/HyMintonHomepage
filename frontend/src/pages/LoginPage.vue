@@ -64,7 +64,7 @@
                   id: res.data[0].id,
                   fname: res.data[0].fname,
                   lname: res.data[0].lname,
-                  authLevel: res.data[0].authority
+                  auth: res.data[0].authority
                 });
                 router.push({name: 'NoticePage'});
               }

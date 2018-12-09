@@ -10,7 +10,7 @@
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-btn color="primary" dark class="mb-2" @click="dialog1=true">셔틀콕 주문</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="newDialog=true">셔틀콕 주문</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog1" max-width="500px" >
 
@@ -101,8 +101,8 @@
     name: 'ShuttlePage',
     data: () => ({
       stock: 100,
-      dialog1: false,
-      dialog2: false,
+      newDialog: false,
+      pwDialog: false,
       search: '',
       headers: [
         {
