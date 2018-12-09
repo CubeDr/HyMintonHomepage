@@ -14,7 +14,7 @@
       <v-btn color="primary" dark class="mb-2" @click="openNewDialog()">신규 회원 등록</v-btn>
     </v-toolbar>
     <v-dialog v-model="newDialog" max-width="500px" >
-<v-layout justify-center>
+      <v-layout justify-center>
     <v-flex >
       <v-form v-model="newValid" ref="form">
         <v-card>
@@ -49,6 +49,13 @@
               label="학부"
               required
             ></v-autocomplete>
+            <v-autocomplete
+              :items="['회장', '부회장', '운영진', '활동회원', '비활동회원']"
+              :rules="[() => !!newItem.authString || '권한을 입력해주세요']"
+              v-model="newItem.authString"
+              label="권한"
+              required
+            ></v-autocomplete>
           </v-card-text>
           <v-divider class="mt-5"></v-divider>
           <v-card-actions>
@@ -61,58 +68,58 @@
   </v-layout>
     </v-dialog>
    
- <v-dialog v-model="pwDialog" max-width="500px" >
+   <v-dialog v-model="pwDialog" max-width="500px" >
 
-      <v-card>
-        <v-card-title>
-          <span class="headline">비밀번호변경</span>
-        </v-card-title>
+        <v-card>
+          <v-card-title>
+            <span class="headline">비밀번호변경</span>
+          </v-card-title>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-text-field v-model="newPw" label="New Password"></v-text-field>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="closePwDialog">취소</v-btn>
-          <v-btn color="blue darken-1" flat @click="updatePw">변경</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-text-field v-model="newPw" label="New Password"></v-text-field>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="closePwDialog">취소</v-btn>
+            <v-btn color="blue darken-1" flat @click="updatePw">변경</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
- <v-dialog v-model="authDialog" max-width="600px" >
+   <v-dialog v-model="authDialog" max-width="600px" >
 
-      <v-card>
-        <v-card-title>
-          <span class="headline">권한변경</span>
-        </v-card-title>
+        <v-card>
+          <v-card-title>
+            <span class="headline">권한변경</span>
+          </v-card-title>
 
-        <v-card-actions>
-           <v-flex xs12 sm6 class="py-2">
-            <v-btn-toggle v-model="newItem.auth">
-              <v-btn flat value="5">
-                회장
-              </v-btn>
-              <v-btn flat value="4">
-                부회장
-              </v-btn>
-              <v-btn flat value="3">
-                운영진
-              </v-btn>
-              <v-btn flat value="2">
-                활동
-              </v-btn>
-              <v-btn flat value="1">
-                비활동
-              </v-btn>
-            </v-btn-toggle>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="closeAuthDialog">취소</v-btn>
-          <v-btn color="blue darken-1" flat @click="newAuth">변경</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+          <v-card-actions>
+             <v-flex xs12 sm6 class="py-2">
+              <v-btn-toggle v-model="newItem.auth">
+                <v-btn flat value="5">
+                  회장
+                </v-btn>
+                <v-btn flat value="4">
+                  부회장
+                </v-btn>
+                <v-btn flat value="3">
+                  운영진
+                </v-btn>
+                <v-btn flat value="2">
+                  활동
+                </v-btn>
+                <v-btn flat value="1">
+                  비활동
+                </v-btn>
+              </v-btn-toggle>
+            </v-flex>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="closeAuthDialog">취소</v-btn>
+            <v-btn color="blue darken-1" flat @click="newAuth">변경</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-  <v-dialog v-model="newPwDialog" max-width="600px" >
+    <v-dialog v-model="newPwDialog" max-width="600px" >
 
       <v-card>
         <v-card-title>
@@ -191,7 +198,8 @@
       lname: '',
       fname: '',
       dep: '',
-      auth: 0
+      auth: 0,
+      authString: ''
     }
   }),
 
@@ -250,12 +258,14 @@
     },
     newSubmit (){
       let randomPw = (10000000 + parseInt(Math.random()*90000000)).toString();
+      let auth = ['비활동회원', '활동회원', '운영진', '부회장', '회장']
+                  .indexOf(this.newItem.authString) + 1;
       this.$http.post('user/new', {
         id: this.newItem.id,
         pw: randomPw,
         lname: this.newItem.lname,
         fname: this.newItem.fname,
-        auth: this.newItem.auth,
+        authority: auth,
         dname: this.newItem.dep
       }).then((res) => {
         this.close();

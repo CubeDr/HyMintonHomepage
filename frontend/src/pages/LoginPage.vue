@@ -54,7 +54,7 @@
         },
         methods: {
           submit() {
-            this.$http.post('db/user/login', {
+            this.$http.post('user/login', {
                 id: this.id,
                 pw: this.pw
             }).then((res) => {
