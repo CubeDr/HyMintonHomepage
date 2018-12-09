@@ -4,7 +4,7 @@
       align-center
       column
       justify-center
-    >
+    > 
         <v-dialog
       v-model="dialog"
       width="500"
