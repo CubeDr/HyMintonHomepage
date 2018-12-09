@@ -23,13 +23,15 @@
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex xs3>
-                <v-text-field v-model="newOrder.amount" type="number" label="신청개수(타)"></v-text-field>
+                <v-text-field v-model="newOrder.amount" type="number" :max="stock" label="신청개수(타)"></v-text-field>
               </v-flex>
               <v-flex xs9>
                 <v-text-field v-model="newOrder.content" label="신청내용"></v-text-field>
               </v-flex>
             </v-layout>
+            <div style="color=">
             잔여개수(타): {{stock}}
+            </div>
           </v-container>
         </v-card-text>
 
@@ -102,6 +104,7 @@
   export default {
     name: 'ShuttlePage',
     data: () => ({
+      stockMinus: false,
       stock: 100,
       orderDialog: false,
       editDialog: false,
@@ -163,6 +166,7 @@
         });
         this.$http.get('order/left').then((res) => {
           this.stock = res.data[0].sum;
+          if (stock<0){this.stockMinus = true;}
         });
       },
       getPaid(b){
@@ -193,6 +197,11 @@
         this.orderDialog = true;
       },
       order () {
+        if(this.newOrder.amount>this.stock){
+
+          this.close();
+          return;
+        }
         this.$http.post('order/new', {
           amount: this.newOrder.amount,
           id: this.$store.state.user.id,
