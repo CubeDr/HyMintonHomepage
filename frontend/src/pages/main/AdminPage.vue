@@ -256,7 +256,6 @@
       this.authDialog = false
     },
     openNewDialog() {
-      if(this.userAuth()<4) return;
       this.newItem = {
         sid: '',
           lname: '',
@@ -297,6 +296,7 @@
       });
     },
     openAuthDialog(id, oAuth) {
+      if(this.$store.state.user.auth<4) return;
       this.targetId = id;
       this.newItem.auth = oAuth;
       this.authDialog = true;
