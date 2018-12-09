@@ -18,7 +18,7 @@
       name: "NoticeWrite",
       data() {
         return {
-          name: "",
+          title: "",
           content: ""
         }
       },
@@ -33,7 +33,7 @@
           this.$http.post('notice/new', {
             id: '2014001001',
             content: this.content,
-            name: this.name
+            title: this.title
           }).then(res => {
             console.log(res);
             eventBus.$emit('wroteNotice');
