@@ -1,6 +1,8 @@
 <template>
     <div id="button" @click="navBtnClick" :style="{background: getColor()}">
-      <img :src="source">
+      <div id="slot">
+        <slot></slot>
+      </div>
       <p>{{ title }}</p>
     </div>
 </template>
@@ -8,7 +10,7 @@
 <script>
     export default {
         name: "HyNavButton",
-        props: ['source', 'title', 'page', 'current', 'selectColor'],
+        props: ['title', 'page', 'current', 'selectColor'],
         methods: {
           navBtnClick() {
             this.$emit('navBtnClick', this.page)
@@ -24,21 +26,25 @@
 <style scoped>
 #button {
   display: inline-flex;
-  padding: 5px;
-}
-
-#button:active {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-img {
-  width: 60px;
-  height: 40px;
+  height: 50px;
+  padding: 0 10px 0 10px;
 }
 
 p {
   margin: auto;
   text-align: center;
   font-size: 20px;
+}
+
+#slot {
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
 }
 </style>

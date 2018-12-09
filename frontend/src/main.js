@@ -1,12 +1,52 @@
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App.vue'
-import VueResource from 'vue-resource'
+import Vuetify from 'vuetify'
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import App from './App'
+import router from './router'
+import axios from 'axios'
+
+import 'vuetify/dist/vuetify.min.css'
+
+Vue.config.productionTip = false;
+Vue.prototype.$http = axios.create({
+  baseURL: 'http://115.140.236.238:14707/'
+});
+Vue.use(Vuetify);
+Vue.use(Vuex);
 
 export const eventBus = new Vue();
 
-Vue.use(VueResource);
+String.prototype.paddingLeft = function (paddingValue) {
+  return String(paddingValue + this).slice(-paddingValue.length);
+};
 
+const store = new Vuex.Store({
+  state: {
+    user: {
+      id: '',
+      fname: '',
+      lname: '',
+      authLevel: -1
+    }
+  },
+  mutations: {
+    login(state, info) {
+      state.user = {
+        id: info.id, fname: info.fname, lname: info.lname, authLevel: info.authLevel
+      }
+    }
+  } ,
+  plugins: [createPersistedState()]
+});
+
+/* eslint-disable no-new */
 new Vue({
   el: '#app',
-  render: h => h(App)
+  store,
+  router,
+  components: { App },
+  template: '<App/>'
 });

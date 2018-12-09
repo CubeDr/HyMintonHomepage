@@ -1,5 +1,7 @@
 <template>
-    <h1>Fee Page</h1>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,4 @@
 </script>
 
 <style scoped>
-
 </style>

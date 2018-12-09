@@ -365,8 +365,6 @@ router.post('/fee/new', function(req, res, next){
 })
 
 
-
-
 // 행사 - month 전달 시 행사 날짜 전달
 router.get('/event/:ym', function(req, res, next){
   var ym = req.params.ym;
