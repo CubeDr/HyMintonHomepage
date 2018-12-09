@@ -112,6 +112,24 @@
       </v-card>
     </v-dialog>
 
+  <v-dialog v-model="newPwDialog" max-width="600px" >
+
+      <v-card>
+        <v-card-title>
+          <span class="headline">회원가입 성공</span>
+        </v-card-title>
+
+        <v-card-actions>
+          <v-flex xs12 sm6 class="py-2">
+            <v-label>새로운 비밀번호는 <b>{{ newPw }}</b> 입니다.</v-label>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="closeNewPwDialog()">확인</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
     <v-data-table
       :headers="headers"
       :items="lists"
@@ -148,6 +166,10 @@
     newDialog: false,
     pwDialog: false,
     authDialog: false,
+
+    newPwDialog: false,
+    newPw: '',
+
     search: '',
     headers: [
       {
@@ -226,6 +248,13 @@
       };
       this.newDialog = true;
     },
+    openNewPwDialog() {
+      this.newPwDialog = true;
+    },
+    closeNewPwDialog() {
+      this.newPwDialog = false;
+      this.newPw = '';
+    },
     submit (){
       let randomPw = (10000000 + parseInt(Math.random()*90000000)).toString();
       this.$http.post('user/new', {
@@ -236,9 +265,10 @@
         auth: this.newItem.auth,
         dname: this.newItem.dep
       }).then((res) => {
-        console.log(res);
+        this.close();
+        this.newPw = randomPw;
+        this.openNewPwDialog();
       });
-      this.close()
     },
     newDepartmentRule() {
       if(this.newItem.dep === '') return '학부를 입력해주세요';
