@@ -18,7 +18,7 @@
         <td class="center"><nobr>{{ notice.id }}</nobr></td>
         <td><nobr>{{ notice.title }}</nobr></td>
         <td class="center"><nobr>{{ notice.lname + notice.fname }}</nobr></td>
-        <td class="center"><nobr>{{ notice.date }}</nobr></td>
+        <td class="center"><nobr>{{ timeFormat(notice.date) }}</nobr></td>
         <td class="center"><nobr>{{ notice.hits }}</nobr></td>
       </tr>
       </tbody>
@@ -62,6 +62,7 @@
 <script>
 
   import {eventBus} from "../main";
+  import Time from "../classes/Time";
 
   export default {
         name: "NoticeList",
@@ -93,7 +94,10 @@
         },
           writeClick() {
             eventBus.$emit("writeClick");
-          }
+          },
+        timeFormat(time) {
+          return Time.fromFormatString(time).datePart;
+        }
       },
       created() {
           this.$http.get('notice/list').then((result) => {
