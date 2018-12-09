@@ -38,7 +38,7 @@
         </v-card-title>
 
         <v-card-text>
-        ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ
+          {{ noticeContent }}
         </v-card-text>
 
         <v-divider></v-divider>
@@ -80,12 +80,18 @@
       },
       methods: {
         openNoticeDialog( notice ){
-          this.noticeName = notice.name;
-          this.noticeWriter = notice.lname+notice.fname;
-          this.noticeDate = notice.date;
-          //?
-          this.noticeContent = notice.content;
-          this.dialog = true;
+          this.$http.get('notice/' + notice.id).then((res) => {
+            let n = res.data[0];
+
+            this.noticeName = n.title;
+            this.noticeWriter = n.lname+n.fname;
+            this.noticeDate = n.date;
+            //?
+            this.noticeContent = n.content;
+            this.dialog = true;
+
+          });
+
         },
           writeClick() {
             eventBus.$emit("writeClick");
