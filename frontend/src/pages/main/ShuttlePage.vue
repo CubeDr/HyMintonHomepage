@@ -29,7 +29,7 @@
                 <v-text-field v-model="newOrder.content" label="신청내용"></v-text-field>
               </v-flex>
             </v-layout>
-            <div style="color=">
+            <div>
             잔여개수(타): {{stock}}
             </div>
           </v-container>
