@@ -45,46 +45,35 @@
       },
       methods: {
         loadNPayInfo() {
-          this.npays = [
-            {
-              fee: '1208',
-              who: [
-                {
-                  id: '2014003991',
-                  name: '김현의'
-                }, {
-                  id: '2014003992',
-                  name: '김현위'
-                }, {
-                  id: '2014003993',
-                  name: '김현희'
-                }, {
-                  id: '2014003994',
-                  name: '김현휘'
-                }
-              ]
-            }, {
-              fee: '1207',
-              who: [
-                {
-                  id: '2014003991',
-                  name: '김현의'
-                }, {
-                  id: '2014003992',
-                  name: '김현위'
-                }, {
-                  id: '2014003993',
-                  name: '김현희'
-                }, {
-                  id: '2014003994',
-                  name: '김현휘'
-                }
-              ]
-            }
-          ]
+          this.$http.get('payment/nopay').then((res) => {
+            // console.log(res.data);
+            let result = [];
+            res.data.forEach((item) => {
+              let existing = result.filter((v, i) => v.fee === item.FID);
+              if(existing.length) {
+                let eIdx = result.indexOf(existing[0]);
+                result[eIdx].who = result[eIdx].who.concat({
+                  // parse user data
+                  id: item.UID,
+                  name: '유저' + item.UID
+                });
+              } else {
+                result.push({
+                  fee: item.FID,
+                  who: [{
+                    // parse user data
+                    id: item.UID,
+                    name: '유저' + item.UID
+                  }]
+                });
+              }
+            });
+            // console.log(result);
+            this.npays = result;
+          });
         },
         feeToString(fee) {
-          return "20" + fee.substr(0, 2) + "년 " + fee.substr(2, 4) + '월 회비';
+          return fee.substr(0, 4) + "년 " + fee.substr(4, 6) + '월 회비';
         }
       }
     }
